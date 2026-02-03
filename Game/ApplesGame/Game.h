@@ -1,0 +1,46 @@
+#pragma once
+#include <SFML/Audio.hpp>
+#include "GameSettings.h"
+#include "Player.h"
+#include "Apple.h"
+#include "Stone.h"
+#include "UI.h"
+#include "SFX.h"
+
+namespace ApplesGame
+{
+	struct Game
+	{
+		// Global data
+		bool isFinished = false;
+		int numEatenApples{ 0 };
+		GameSettings gameSettings;
+
+		Player player;
+		Apple* apples{ nullptr };
+		Stone stones[NUM_STONES];
+
+		// Resources
+		sf::Texture playerTexture;
+		sf::Texture appleTexture;
+		sf::Texture stoneTexture;
+
+		// Sound
+		SFX sfx;
+
+		// UI
+		UI ui;
+	};
+
+	void InitGame(Game& game, GameSettings& gameSettings);
+
+	void UpdateGame(Game& game, float deltaTime);
+
+	void DrawGame(sf::RenderWindow& window, Game& game);
+
+	void GameOver(sf::RenderWindow& window, Game& game);
+
+	void DeinitializeGame(Game& game);
+
+	int StartGame(int seed, GameSettings& gameSettings);
+}
