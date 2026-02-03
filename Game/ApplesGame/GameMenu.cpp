@@ -30,7 +30,7 @@ namespace ApplesGame
 
 		gameMenu.textApplesNum.setFont(gameMenu.font);
 		gameMenu.textApplesNum.setFillColor(sf::Color::White);
-		gameMenu.textApplesNum.setString("Apples Num[-/+]: " + std::to_string(gameMenu.gameSettings.numApples));
+		gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
 		gameMenu.textApplesNum.setCharacterSize(20);
 		rctOfText = gameMenu.textApplesNum.getLocalBounds();
 		gameMenu.textApplesNum.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
@@ -49,24 +49,24 @@ namespace ApplesGame
 	{
 		switch (key)
 		{
-		case sf::Keyboard::Subtract: {
-			gameMenu.textApplesNum.setString("Apples Num[-/+]: "
+		case sf::Keyboard::Down: {
+			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
 				+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MIN ? NUM_APPLES_MIN : --gameMenu.gameSettings.numApples));
 			break;
 		}
-		case sf::Keyboard::Add: {
-			gameMenu.textApplesNum.setString("Apples Num[-/+]: "
+		case sf::Keyboard::Up: {
+			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
 				+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MAX ? NUM_APPLES_MAX : ++gameMenu.gameSettings.numApples));
 			break;
 		}
 		case sf::Keyboard::Left: {
 			gameMenu.gameSettings.numApples = 20;
-			gameMenu.textApplesNum.setString("Apples Num[-/+]: " + std::to_string(gameMenu.gameSettings.numApples));
+			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
 			break;
 		}
 		case sf::Keyboard::Right: {
 			gameMenu.gameSettings.numApples = NUM_APPLES_MAX;
-			gameMenu.textApplesNum.setString("Apples Num[-/+]: " + std::to_string(gameMenu.gameSettings.numApples));
+			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
 			break;
 		}
 		case sf::Keyboard::Num1: {
