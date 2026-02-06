@@ -92,7 +92,7 @@ namespace ApplesGame
 
 				game.sfx.eatSound.play();
 
-				if (~game.gameSettings.gameMode | !static_cast<int>(EGameMode::ApplesInfinity)
+				if (!(game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
 					&& game.numEatenApples == game.gameSettings.numApples)
 				{
 					game.isFinished = true;
