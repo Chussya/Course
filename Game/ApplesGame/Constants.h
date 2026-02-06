@@ -9,6 +9,7 @@ namespace ApplesGame
 	const float INITIAL_SPEED = 100.f;
 	const float BONUS_SPEED = 100.f;
 	const float INITIAL_ACCELERATION = 20.f;
+	const float DELTA_TIME_CORRECT = 800.f;
 	const float PLAYER_SIZE = 20.f;
 	const int NUM_APPLES_MAX = 50;
 	const int NUM_APPLES_MID = 25;

@@ -92,11 +92,18 @@ namespace ApplesGame
 
 				game.sfx.eatSound.play();
 
+				// If not infinity mode - finish game
 				if (!(game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
 					&& game.numEatenApples == game.gameSettings.numApples)
 				{
 					game.isFinished = true;
 					break;
+				}
+
+				// Acceleration boost
+				if (game.gameSettings.gameMode & static_cast<int>(EGameMode::Acceleration))
+				{
+					game.player.speed += (game.player.acceleration * deltaTime * DELTA_TIME_CORRECT);
 				}
 
 				// Respawn apple
@@ -180,7 +187,6 @@ namespace ApplesGame
 			float deltaTime = currentTime - lastTime;
 
 			lastTime = currentTime;
-			game.player.speed += game.player.acceleration * deltaTime;
 
 			// Read events
 			sf::Event event;
