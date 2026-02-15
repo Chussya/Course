@@ -1,12 +1,14 @@
 ﻿#include <cassert>
 #include "Constants.h"
 #include "GameMenu.h"
+#include "Record.h"
 #include "Game.h"
 
 namespace ApplesGame
 {
 	void InitMenu(GameMenu& gameMenu)
 	{
+		// Init UI
 		gameMenu.window.create(sf::VideoMode(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), "Apples Game");
 
 		gameMenu.font;
@@ -43,6 +45,9 @@ namespace ApplesGame
 		rctOfText = gameMenu.textPlayExit.getLocalBounds();
 		gameMenu.textPlayExit.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
 		gameMenu.textPlayExit.setPosition(gameMenu.window.getSize().x / 2.f, 180.f);
+
+		// Init Records
+		InitRecord(gameMenu.records);
 	}
 
 	void UpdateText(GameMenu& gameMenu, sf::Keyboard::Key key)
@@ -120,12 +125,16 @@ namespace ApplesGame
 
 	void StartMenu()
 	{
+		int seed = (int)time(nullptr);
+		srand(seed);
+
 		bool isContinue = true;
 		bool redrawWindow = false;
 		GameMenu gameMenu;
 
 		InitMenu(gameMenu);
 		DrawWindow(gameMenu);
+
 
 		while (isContinue)
 		{
@@ -148,7 +157,7 @@ namespace ApplesGame
 				{
 					redrawWindow = true;
 					gameMenu.window.setVisible(false);
-					StartGame((int)time(nullptr), gameMenu.gameSettings);
+					StartGame(seed, gameMenu.gameSettings, gameMenu.records);
 					gameMenu.window.setVisible(true);
 				} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{

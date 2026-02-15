@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Audio.hpp>
+#include <unordered_map>
 #include "GameSettings.h"
+#include "Record.h"
 #include "Player.h"
 #include "Apple.h"
 #include "Stone.h"
@@ -38,9 +40,9 @@ namespace ApplesGame
 
 	void DrawGame(sf::RenderWindow& window, Game& game);
 
-	void GameOver(sf::RenderWindow& window, Game& game);
+	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records);
 
 	void DeinitializeGame(Game& game);
 
-	int StartGame(int seed, GameSettings& gameSettings);
+	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records);
 }
