@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
 #include "GameSettings.h"
 
 namespace ApplesGame
@@ -17,6 +18,8 @@ namespace ApplesGame
 		sf::RenderWindow window;
 
 		GameSettings gameSettings;
+
+		std::unordered_map<std::string, int> records;
 	};
 
 	void InitMenu(GameMenu& gameMenu);

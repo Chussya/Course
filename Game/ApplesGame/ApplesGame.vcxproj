@@ -165,9 +165,11 @@
     <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Record.cpp" />
     <ClCompile Include="SFX.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
@@ -177,9 +179,11 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Record.h" />
     <ClInclude Include="SFX.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
