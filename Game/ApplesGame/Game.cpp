@@ -23,16 +23,17 @@ namespace ApplesGame
 		InitPlayer(game.player, game);
 
 		// Init apples:
-		game.apples = new Apple[game.gameSettings.numApples];
-		for (int i = 0; i < game.gameSettings.numApples; ++i)
+		game.apples.resize(game.gameSettings.numApples);
+		for (Apple& apple : game.apples)
 		{
-			InitApple(game.apples[i], game);
+			InitApple(apple, game);
 		}
 
 		// Init stones:
-		for (int i = 0; i < NUM_STONES; ++i)
+		game.stones.resize(NUM_STONES);
+		for (Stone& stone : game.stones)
 		{
-			InitStone(game.stones[i], game);
+			InitStone(stone, game);
 		}
 
 		// Game cicle:
@@ -85,9 +86,9 @@ namespace ApplesGame
 		}
 
 		// Check apples' collision:
-		for (Apple* ptr = game.apples; ptr < game.apples + game.gameSettings.numApples; ++ptr)
+		for (Apple& apple : game.apples)
 		{
-			if (ptr->pos.x >= 0 && IsCirclesCollide(game.player.pos, PLAYER_SIZE / 2.f, ptr->pos, APPLE_SIZE / 2.f))
+			if (apple.pos.x >= 0 && IsCirclesCollide(game.player.pos, PLAYER_SIZE / 2.f, apple.pos, APPLE_SIZE / 2.f))
 			{
 				UpdateScores(game.ui, ++game.numEatenApples);
 
@@ -110,12 +111,12 @@ namespace ApplesGame
 				// Respawn apple
 				if (game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
 				{
-					InitApple(*ptr, game);
+					InitApple(apple, game);
 				}
 				// Hide apple
 				else
 				{
-					ptr->pos = { -10.f, -10.f };
+					apple.pos = { -10.f, -10.f };
 				}
 			}
 		}
@@ -129,9 +130,9 @@ namespace ApplesGame
 		}
 
 		// Check stones' collision:
-		for (int i = 0; i < NUM_STONES; ++i)
+		for (Stone& stone : game.stones)
 		{
-			if (IsRectanglesCollide(game.player.pos, { PLAYER_SIZE, PLAYER_SIZE }, game.stones[i].pos, { STONE_SIZE, STONE_SIZE }))
+			if (IsRectanglesCollide(game.player.pos, { PLAYER_SIZE, PLAYER_SIZE }, stone.pos, { STONE_SIZE, STONE_SIZE }))
 			{
 				game.isFinished = true;
 				break;
@@ -142,13 +143,13 @@ namespace ApplesGame
 	void DrawGame(sf::RenderWindow& window, Game& game)
 	{
 		// Draw objects:
-		for (int i = 0; i < game.gameSettings.numApples; ++i)
+		for (Apple& apple : game.apples)
 		{
-			DrawApple(game.apples[i], window);
+			DrawApple(apple, window);
 		}
-		for (int i = 0; i < NUM_STONES; ++i)
+		for (Stone& stone : game.stones)
 		{
-			DrawStone(game.stones[i], window);
+			DrawStone(stone, window);
 		}
 		DrawPlayer(game.player, window);
 		DrawUI(game.ui, window);
@@ -162,7 +163,8 @@ namespace ApplesGame
 
 	void DeinitializeGame(Game& game)
 	{
-		delete[] game.apples;
+		game.apples.clear();
+		game.stones.clear();
 	}
 
 	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records)

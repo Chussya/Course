@@ -14,13 +14,13 @@ namespace ApplesGame
 	struct Game
 	{
 		// Global data
-		bool isFinished = false;
+		bool isFinished{ false };
 		int numEatenApples{ 0 };
 		GameSettings gameSettings;
 
 		Player player;
-		Apple* apples{ nullptr };
-		Stone stones[NUM_STONES];
+		std::vector<Apple> apples;
+		std::vector<Stone> stones;
 
 		// Resources
 		sf::Texture playerTexture;
