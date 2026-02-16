@@ -1,5 +1,6 @@
 #include <cassert>
 #include "Game.h"
+#include "Record.h"
 
 namespace ApplesGame
 {
@@ -153,9 +154,9 @@ namespace ApplesGame
 		DrawUI(game.ui, window);
 	}
 
-	void GameOver(sf::RenderWindow& window, Game& game)
+	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records)
 	{
-		DrawGameOver(game.ui, window);
+		DrawGameOver(game.ui, window, records);
 		PlaySoundUntilEnd(game.sfx.deathSound);
 	}
 
@@ -164,10 +165,8 @@ namespace ApplesGame
 		delete[] game.apples;
 	}
 
-	int StartGame(int seed, GameSettings& gameSettings)
+	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records)
 	{
-		srand(seed);
-
 		// Init window
 		sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Apples Game");
 
@@ -218,7 +217,29 @@ namespace ApplesGame
 		// Game over
 		if (game.isFinished)
 		{
-			GameOver(window, game);
+			// Actualise array
+			if (records["Player"] < game.numEatenApples)
+			{
+				records["Player"] = game.numEatenApples;
+			}
+			SortByScores(records);
+
+			GameOver(window, game, records);
+
+			while (window.isOpen())
+			{
+				sf::Event event;
+				while (window.pollEvent(event))
+				{
+					if (event.type == sf::Event::Closed)
+						window.close();
+
+					if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+					{
+						window.close();
+					}
+				}
+			}
 		}
 
 		// Denitialization
