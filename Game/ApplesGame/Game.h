@@ -11,10 +11,17 @@
 
 namespace ApplesGame
 {
+	enum class GameState
+	{
+		None = 0,
+		Playing,
+		GameOver,
+	};
+
 	struct Game
 	{
 		// Global data
-		bool isFinished{ false };
+		std::vector<GameState> gameStateStack;
 		int numEatenApples{ 0 };
 		GameSettings gameSettings;
 
@@ -35,14 +42,10 @@ namespace ApplesGame
 	};
 
 	void InitGame(Game& game, GameSettings& gameSettings);
-
+	void PushState(Game& game, GameState gameState);
 	void UpdateGame(Game& game, float deltaTime);
-
 	void DrawGame(sf::RenderWindow& window, Game& game);
-
 	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records);
-
 	void DeinitializeGame(Game& game);
-
 	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records);
 }

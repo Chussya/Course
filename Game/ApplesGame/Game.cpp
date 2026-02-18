@@ -37,8 +37,17 @@ namespace ApplesGame
 		}
 
 		// Game cicle:
-		game.isFinished = false;
+		PushState(game, GameState::Playing);
 		game.numEatenApples = 0;
+	}
+
+	void PushState(Game& game, GameState gameState)
+	{
+		if (game.gameStateStack.size() > 0)
+		{
+			game.gameStateStack.pop_back();
+		}
+		game.gameStateStack.push_back(gameState);
 	}
 
 	void UpdateGame(Game& game, float deltaTime)
@@ -98,7 +107,7 @@ namespace ApplesGame
 				if (!(game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
 					&& game.numEatenApples == game.gameSettings.numApples)
 				{
-					game.isFinished = true;
+					PushState(game, GameState::GameOver);
 					break;
 				}
 
@@ -125,7 +134,7 @@ namespace ApplesGame
 		if (game.player.pos.y - PLAYER_SIZE / 2.f <= 0 || game.player.pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT
 			|| game.player.pos.x - PLAYER_SIZE / 2.f <= 0 || game.player.pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH)
 		{
-			game.isFinished = true;
+			PushState(game, GameState::GameOver);
 			return;
 		}
 
@@ -134,7 +143,7 @@ namespace ApplesGame
 		{
 			if (IsRectanglesCollide(game.player.pos, { PLAYER_SIZE, PLAYER_SIZE }, stone.pos, { STONE_SIZE, STONE_SIZE }))
 			{
-				game.isFinished = true;
+				PushState(game, GameState::GameOver);
 				break;
 			}
 		}
@@ -157,8 +166,32 @@ namespace ApplesGame
 
 	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records)
 	{
+		// Actualise array
+		if (records["Player"] < game.numEatenApples)
+		{
+			records["Player"] = game.numEatenApples;
+		}
+		SortByScores(records);
+
+		// Redraw window
 		DrawGameOver(game.ui, window, records);
 		PlaySoundUntilEnd(game.sfx.deathSound);
+
+		// Wait any actions from player
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+
+				if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+				{
+					window.close();
+				}
+			}
+		}
 	}
 
 	void DeinitializeGame(Game& game)
@@ -181,7 +214,7 @@ namespace ApplesGame
 		float lastTime{ gameClock.getElapsedTime().asSeconds() };
 
 		// Main loop
-		while (window.isOpen() && !game.isFinished)
+		while (window.isOpen() && game.gameStateStack.back() == GameState::Playing)
 		{
 			// Calculate time delta
 			float currentTime = gameClock.getElapsedTime().asSeconds();
@@ -217,31 +250,9 @@ namespace ApplesGame
 		}
 
 		// Game over
-		if (game.isFinished)
+		if (game.gameStateStack.back() == GameState::GameOver)
 		{
-			// Actualise array
-			if (records["Player"] < game.numEatenApples)
-			{
-				records["Player"] = game.numEatenApples;
-			}
-			SortByScores(records);
-
 			GameOver(window, game, records);
-
-			while (window.isOpen())
-			{
-				sf::Event event;
-				while (window.pollEvent(event))
-				{
-					if (event.type == sf::Event::Closed)
-						window.close();
-
-					if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
-					{
-						window.close();
-					}
-				}
-			}
 		}
 
 		// Denitialization
