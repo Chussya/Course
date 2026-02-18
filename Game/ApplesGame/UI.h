@@ -16,10 +16,7 @@ namespace ApplesGame
 	};
 
 	void InitUI(UI& ui);
-
 	void DrawUI(UI& ui, sf::RenderWindow& window);
-
 	void DrawGameOver(UI& ui, sf::RenderWindow& window, std::unordered_map<std::string, int>& records);
-
 	void UpdateScores(UI& ui, int numEatenApples);
 }
