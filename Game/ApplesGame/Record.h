@@ -11,6 +11,5 @@ namespace ApplesGame
 	};
 
 	void InitRecord(std::unordered_map<std::string, int>& records);
-
 	void SortByScores(std::unordered_map<std::string, int>& records);
 }

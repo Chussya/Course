@@ -25,8 +25,6 @@ namespace ApplesGame
 	struct Game;
 
 	void InitPlayer(Player& player, const Game& game);
-
 	void DrawPlayer(Player& player, sf::RenderWindow& window);
-
 	void RotatePlayer(Player& player, PlayerDirection newDirection);
 }

@@ -23,10 +23,7 @@ namespace ApplesGame
 	};
 
 	void InitMenu(GameMenu& gameMenu);
-
 	void UpdateText(GameMenu& gameMenu, sf::Keyboard::Key key);
-
 	void DrawWindow(GameMenu& gameMenu);
-
 	void StartMenu();
 }
