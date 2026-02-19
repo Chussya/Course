@@ -43,6 +43,9 @@
     <ClCompile Include="Util.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="ExitDialog.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -79,6 +82,9 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="Util.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitDialog.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>

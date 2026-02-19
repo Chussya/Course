@@ -1,4 +1,5 @@
 ﻿#include <cassert>
+#include "ExitDialog.h"
 #include "Constants.h"
 #include "GameMenu.h"
 #include "Record.h"
@@ -6,12 +7,56 @@
 
 namespace ApplesGame
 {
+	void HandleGameMenuEvent(GameMenu& gameMenu)
+	{
+		bool redrawWindow = false;
+
+		while (gameMenu.window.isOpen())
+		{
+			sf::Event event;
+			while (gameMenu.window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					gameMenu.window.close();
+
+				if (event.type == sf::Event::KeyReleased)
+				{
+					HandleKeyboardEvent(event.key, gameMenu);
+					redrawWindow = true;
+				}
+			}
+
+			if (redrawWindow)
+			{
+				redrawWindow = false;
+				DrawMenuWindow(gameMenu);
+			}
+		}
+	}
+
+	void HandleKeyboardEvent(sf::Event::KeyEvent keyEvent, GameMenu& gameMenu)
+	{
+		switch (keyEvent.code)
+		{
+		case sf::Keyboard::Space: {
+			LoadGame(gameMenu);
+			break;
+		}
+		case sf::Keyboard::Escape: {
+			LoadExitDialog(gameMenu);
+			break;
+		}
+		default:
+			UpdateText(gameMenu, keyEvent.code);
+			break;
+		}
+	}
+
 	void InitMenu(GameMenu& gameMenu)
 	{
 		// Init UI
 		gameMenu.window.create(sf::VideoMode(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), "Apples Game");
 
-		gameMenu.font;
 		assert(gameMenu.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
 
 		gameMenu.textTitle.setFont(gameMenu.font);
@@ -108,7 +153,7 @@ namespace ApplesGame
 		gameMenu.textMode.setString("Mode[1-3]: " + gameModeText);
 	}
 
-	void DrawWindow(GameMenu& gameMenu)
+	void DrawMenuWindow(GameMenu& gameMenu)
 	{
 		gameMenu.window.clear();
 		gameMenu.window.draw(gameMenu.textTitle);
@@ -123,54 +168,39 @@ namespace ApplesGame
 		gameMenu.window.display();
 	}
 
+	void LoadGame(GameMenu& gameMenu)
+	{
+		gameMenu.window.setVisible(false);
+		StartGame(gameMenu.gameSettings, gameMenu.records);
+		gameMenu.window.setVisible(true);
+	}
+
+	void LoadExitDialog(GameMenu& gameMenu)
+	{
+		gameMenu.window.setVisible(false);
+
+		switch (ShowExitDialogWindow())
+		{
+		case sf::Keyboard::Y: {
+			gameMenu.window.close();
+			break;
+		}
+		default:
+			gameMenu.window.setVisible(true);
+			break;
+		}
+	}
+
 	void StartMenu()
 	{
 		int seed = (int)time(nullptr);
 		srand(seed);
 
-		bool isContinue = true;
-		bool redrawWindow = false;
 		GameMenu gameMenu;
 
 		InitMenu(gameMenu);
-		DrawWindow(gameMenu);
+		DrawMenuWindow(gameMenu);
 
-
-		while (isContinue)
-		{
-			while (gameMenu.window.isOpen())
-			{
-				sf::Event event;
-				while (gameMenu.window.pollEvent(event))
-				{
-					if (event.type == sf::Event::Closed)
-						gameMenu.window.close();
-
-					if (event.type == sf::Event::KeyReleased)
-					{
-						UpdateText(gameMenu, event.key.code);
-						redrawWindow = true;
-					}
-				}
-
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-				{
-					redrawWindow = true;
-					gameMenu.window.setVisible(false);
-					StartGame(seed, gameMenu.gameSettings, gameMenu.records);
-					gameMenu.window.setVisible(true);
-				} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-				{
-					gameMenu.window.close();
-					isContinue = false;
-				}
-
-				if (redrawWindow)
-				{
-					redrawWindow = false;
-					DrawWindow(gameMenu);
-				}
-			}
-		}
+		HandleGameMenuEvent(gameMenu);
 	}
 }
