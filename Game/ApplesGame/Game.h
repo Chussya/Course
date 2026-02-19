@@ -47,5 +47,5 @@ namespace ApplesGame
 	void DrawGame(sf::RenderWindow& window, Game& game);
 	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records);
 	void DeinitializeGame(Game& game);
-	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records);
+	int StartGame(GameSettings& gameSettings, std::unordered_map<std::string, int>& records);
 }

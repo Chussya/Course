@@ -245,7 +245,7 @@ namespace ApplesGame
 		PushGameState(game.gameStateStack, GameState::None);
 	}
 
-	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records)
+	int StartGame(GameSettings& gameSettings, std::unordered_map<std::string, int>& records)
 	{
 		// Init window
 		sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Apples Game");
