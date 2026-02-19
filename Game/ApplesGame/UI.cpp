@@ -67,7 +67,7 @@ namespace ApplesGame
 		end.resize(ROW_LENGTH, '=');
 		tableOfLeaders.append(end);
 
-		// Draw table
+		// Init table records
 		ui.leaderBoardText.setFont(ui.recordsFont);
 		ui.leaderBoardText.setFillColor(sf::Color::White);
 		ui.leaderBoardText.setString(tableOfLeaders);
@@ -76,10 +76,10 @@ namespace ApplesGame
 		ui.leaderBoardText.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
 		ui.leaderBoardText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
+		// Draw game over window
 		window.draw(ui.gameOverText);
 		window.draw(ui.leaderBoardText);
 		window.draw(ui.menuText);
-		//window.draw(ui.gameOverText);
 
 		window.display();
 	}

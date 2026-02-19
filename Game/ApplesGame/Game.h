@@ -42,7 +42,7 @@ namespace ApplesGame
 	};
 
 	void InitGame(Game& game, GameSettings& gameSettings);
-	void PushState(Game& game, GameState gameState);
+	void PushGameState(std::vector<GameState>& game, GameState gameState);
 	void UpdateGame(Game& game, float deltaTime);
 	void DrawGame(sf::RenderWindow& window, Game& game);
 	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records);

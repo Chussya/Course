@@ -37,17 +37,60 @@ namespace ApplesGame
 		}
 
 		// Game cicle:
-		PushState(game, GameState::Playing);
+		PushGameState(game.gameStateStack, GameState::Playing);
 		game.numEatenApples = 0;
 	}
 
-	void PushState(Game& game, GameState gameState)
+	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
 	{
-		if (game.gameStateStack.size() > 0)
+		// Init game time
+		sf::Clock gameClock;
+		float lastTime{ gameClock.getElapsedTime().asSeconds() };
+
+		// Main loop
+		while (window.isOpen() && game.gameStateStack.back() == GameState::Playing)
 		{
-			game.gameStateStack.pop_back();
+			// Calculate time delta
+			float currentTime = gameClock.getElapsedTime().asSeconds();
+			float deltaTime = currentTime - lastTime;
+
+			lastTime = currentTime;
+
+			// Read events
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+				{
+					window.close();
+					break;
+				}
+				if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+				{
+					window.close();
+					break;
+				}
+			}
+
+			// Update game state
+			UpdateGame(game, deltaTime);
+
+			window.clear();
+
+			// Draw game
+			DrawGame(window, game);
+
+			window.display();
 		}
-		game.gameStateStack.push_back(gameState);
+	}
+
+	void PushGameState(std::vector<GameState>& stack, GameState gameState)
+	{
+		if (stack.size() > 0)
+		{
+			stack.pop_back();
+		}
+		stack.push_back(gameState);
 	}
 
 	void UpdateGame(Game& game, float deltaTime)
@@ -107,7 +150,7 @@ namespace ApplesGame
 				if (!(game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
 					&& game.numEatenApples == game.gameSettings.numApples)
 				{
-					PushState(game, GameState::GameOver);
+					PushGameState(game.gameStateStack, GameState::GameOver);
 					break;
 				}
 
@@ -134,7 +177,7 @@ namespace ApplesGame
 		if (game.player.pos.y - PLAYER_SIZE / 2.f <= 0 || game.player.pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT
 			|| game.player.pos.x - PLAYER_SIZE / 2.f <= 0 || game.player.pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH)
 		{
-			PushState(game, GameState::GameOver);
+			PushGameState(game.gameStateStack, GameState::GameOver);
 			return;
 		}
 
@@ -143,7 +186,7 @@ namespace ApplesGame
 		{
 			if (IsRectanglesCollide(game.player.pos, { PLAYER_SIZE, PLAYER_SIZE }, stone.pos, { STONE_SIZE, STONE_SIZE }))
 			{
-				PushState(game, GameState::GameOver);
+				PushGameState(game.gameStateStack, GameState::GameOver);
 				break;
 			}
 		}
@@ -166,7 +209,7 @@ namespace ApplesGame
 
 	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records)
 	{
-		// Actualise array
+		// Actualize array
 		if (records["Player"] < game.numEatenApples)
 		{
 			records["Player"] = game.numEatenApples;
@@ -198,6 +241,8 @@ namespace ApplesGame
 	{
 		game.apples.clear();
 		game.stones.clear();
+
+		PushGameState(game.gameStateStack, GameState::None);
 	}
 
 	int StartGame(int seed, GameSettings& gameSettings, std::unordered_map<std::string, int>& records)
@@ -214,40 +259,7 @@ namespace ApplesGame
 		float lastTime{ gameClock.getElapsedTime().asSeconds() };
 
 		// Main loop
-		while (window.isOpen() && game.gameStateStack.back() == GameState::Playing)
-		{
-			// Calculate time delta
-			float currentTime = gameClock.getElapsedTime().asSeconds();
-			float deltaTime = currentTime - lastTime;
-
-			lastTime = currentTime;
-
-			// Read events
-			sf::Event event;
-			while (window.pollEvent(event))
-			{
-				if (event.type == sf::Event::Closed)
-				{
-					window.close();
-					break;
-				}
-				if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
-				{
-					window.close();
-					break;
-				}
-			}
-
-			// Update game state
-			UpdateGame(game, deltaTime);
-
-			window.clear();
-
-			// Draw game
-			DrawGame(window, game);
-
-			window.display();
-		}
+		HandleWindowEvents(game, window);
 
 		// Game over
 		if (game.gameStateStack.back() == GameState::GameOver)

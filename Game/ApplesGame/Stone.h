@@ -14,6 +14,5 @@ namespace ApplesGame
 	struct Game;
 
 	void InitStone(Stone& stone, const Game& game);
-
 	void DrawStone(Stone& stone, sf::RenderWindow& window);
 }
