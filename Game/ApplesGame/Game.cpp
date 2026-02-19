@@ -37,8 +37,46 @@ namespace ApplesGame
 		}
 
 		// Game cicle:
-		PushGameState(game.gameStateStack, GameState::Playing);
+		ChangeGameState(game.gameStateStack, GameState::Playing);
 		game.numEatenApples = 0;
+	}
+
+	void GameStatePlaying(Game& game, sf::RenderWindow& window, float deltaTime)
+	{
+		// Read events
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed
+				|| event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
+			{
+				RemoveGameState(game.gameStateStack);
+				break;
+			}
+		}
+
+		// Update game state
+		UpdateGame(game, deltaTime);
+
+		window.clear();
+
+		// Draw game
+		DrawGame(window, game);
+
+		window.display();
+	}
+
+	void GameStateDeath(Game& game)
+	{
+		PlaySoundUntilEnd(game.sfx.deathSound);
+		RemoveGameState(game.gameStateStack);
+	}
+
+	void GameStateGameOver(Game& game, sf::RenderWindow& window)
+	{
+		// Denitialization
+		DeinitializeGame(game);
+		window.close();
 	}
 
 	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
@@ -48,49 +86,71 @@ namespace ApplesGame
 		float lastTime{ gameClock.getElapsedTime().asSeconds() };
 
 		// Main loop
-		while (window.isOpen() && game.gameStateStack.back() == GameState::Playing)
+		while (window.isOpen())
 		{
-			// Calculate time delta
-			float currentTime = gameClock.getElapsedTime().asSeconds();
-			float deltaTime = currentTime - lastTime;
-
-			lastTime = currentTime;
-
-			// Read events
-			sf::Event event;
-			while (window.pollEvent(event))
+			switch (GetGameState(game.gameStateStack))
 			{
-				if (event.type == sf::Event::Closed)
-				{
-					window.close();
-					break;
-				}
-				if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
-				{
-					window.close();
-					break;
-				}
+			case GameState::Playing: {
+				// Calculate time delta
+				float currentTime = gameClock.getElapsedTime().asSeconds();
+				float deltaTime = currentTime - lastTime;
+
+				lastTime = currentTime;
+
+				GameStatePlaying(game, window, deltaTime);
+				break;
 			}
-
-			// Update game state
-			UpdateGame(game, deltaTime);
-
-			window.clear();
-
-			// Draw game
-			DrawGame(window, game);
-
-			window.display();
+			case GameState::Death: {
+				GameStateDeath(game);
+				break;
+			}
+			case GameState::GameOver: {
+				GameStateGameOver(game, window);
+				break;
+			}
+			default:
+				window.close();
+				break;
+			}
 		}
 	}
 
-	void PushGameState(std::vector<GameState>& stack, GameState gameState)
+	void ChangeGameState(std::vector<GameState>& stack, GameState gameState)
 	{
 		if (stack.size() > 0)
 		{
 			stack.pop_back();
 		}
 		stack.push_back(gameState);
+	}
+
+	void AddGameState(std::vector<GameState>& stack, GameState gameState)
+	{
+		stack.push_back(gameState);
+	}
+
+	void RemoveGameState(std::vector<GameState>& stack)
+	{
+		if (stack.size() > 0)
+		{
+			stack.pop_back();
+		}
+		if (stack.size() == 0)
+		{
+			stack.push_back(GameState::None);
+		}
+	}
+
+	GameState GetGameState(std::vector<GameState>& stack)
+	{
+		if (stack.size() > 0)
+		{
+			return stack.back();
+		}
+		else
+		{
+			AddGameState(stack, GameState::None);
+		}
 	}
 
 	void UpdateGame(Game& game, float deltaTime)
@@ -150,7 +210,7 @@ namespace ApplesGame
 				if (!(game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
 					&& game.numEatenApples == game.gameSettings.numApples)
 				{
-					PushGameState(game.gameStateStack, GameState::GameOver);
+					ChangeGameState(game.gameStateStack, GameState::GameOver);
 					break;
 				}
 
@@ -177,7 +237,8 @@ namespace ApplesGame
 		if (game.player.pos.y - PLAYER_SIZE / 2.f <= 0 || game.player.pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT
 			|| game.player.pos.x - PLAYER_SIZE / 2.f <= 0 || game.player.pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH)
 		{
-			PushGameState(game.gameStateStack, GameState::GameOver);
+			ChangeGameState(game.gameStateStack, GameState::GameOver);
+			AddGameState(game.gameStateStack, GameState::Death);
 			return;
 		}
 
@@ -186,7 +247,8 @@ namespace ApplesGame
 		{
 			if (IsRectanglesCollide(game.player.pos, { PLAYER_SIZE, PLAYER_SIZE }, stone.pos, { STONE_SIZE, STONE_SIZE }))
 			{
-				PushGameState(game.gameStateStack, GameState::GameOver);
+				ChangeGameState(game.gameStateStack, GameState::GameOver);
+				AddGameState(game.gameStateStack, GameState::Death);
 				break;
 			}
 		}
@@ -207,45 +269,13 @@ namespace ApplesGame
 		DrawUI(game.ui, window);
 	}
 
-	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records)
-	{
-		// Actualize array
-		if (records["Player"] < game.numEatenApples)
-		{
-			records["Player"] = game.numEatenApples;
-		}
-		SortByScores(records);
-
-		// Redraw window
-		DrawGameOver(game.ui, window, records);
-		PlaySoundUntilEnd(game.sfx.deathSound);
-
-		// Wait any actions from player
-		while (window.isOpen())
-		{
-			sf::Event event;
-			while (window.pollEvent(event))
-			{
-				if (event.type == sf::Event::Closed)
-					window.close();
-
-				if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
-				{
-					window.close();
-				}
-			}
-		}
-	}
-
 	void DeinitializeGame(Game& game)
 	{
 		game.apples.clear();
 		game.stones.clear();
-
-		PushGameState(game.gameStateStack, GameState::None);
 	}
 
-	int StartGame(GameSettings& gameSettings, std::unordered_map<std::string, int>& records)
+	int StartGame(GameSettings& gameSettings, int*& playerScore)
 	{
 		// Init window
 		sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Apples Game");
@@ -253,23 +283,10 @@ namespace ApplesGame
 		// Game initialization
 		Game game;
 		InitGame(game, gameSettings);
+		playerScore = &game.numEatenApples;
 
-		// Init game time:
-		sf::Clock gameClock;
-		float lastTime{ gameClock.getElapsedTime().asSeconds() };
-
-		// Main loop
 		HandleWindowEvents(game, window);
 
-		// Game over
-		if (game.gameStateStack.back() == GameState::GameOver)
-		{
-			GameOver(window, game, records);
-		}
-
-		// Denitialization
-		DeinitializeGame(game);
-
-		return 0;
+		return static_cast<int>(GetGameState(game.gameStateStack));
 	}
 }

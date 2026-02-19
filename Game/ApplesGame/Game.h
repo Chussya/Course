@@ -15,6 +15,7 @@ namespace ApplesGame
 	{
 		None = 0,
 		Playing,
+		Death,
 		GameOver,
 	};
 
@@ -41,11 +42,24 @@ namespace ApplesGame
 		UI ui;
 	};
 
+	// Event's functions
+	void HandleWindowEvents(Game& game, sf::RenderWindow& window);
+
+	// Standard functions
 	void InitGame(Game& game, GameSettings& gameSettings);
-	void PushGameState(std::vector<GameState>& game, GameState gameState);
 	void UpdateGame(Game& game, float deltaTime);
 	void DrawGame(sf::RenderWindow& window, Game& game);
-	void GameOver(sf::RenderWindow& window, Game& game, std::unordered_map<std::string, int> records);
 	void DeinitializeGame(Game& game);
-	int StartGame(GameSettings& gameSettings, std::unordered_map<std::string, int>& records);
+
+	// Game state logic
+	void GameStatePlaying(Game& game, sf::RenderWindow& window, float currentTime);
+	void GameStateDeath(Game& game);
+	void GameStateGameOver(Game& game, sf::RenderWindow& window);
+	void ChangeGameState(std::vector<GameState>& stack, GameState gameState);
+	void AddGameState(std::vector<GameState>& stack, GameState gameState);
+	void RemoveGameState(std::vector<GameState>& stack);
+	GameState GetGameState(std::vector<GameState>& stack);
+
+	// Main function. Returns game's state in the end of game
+	int StartGame(GameSettings& gameSettings, int*& playerScore);
 }

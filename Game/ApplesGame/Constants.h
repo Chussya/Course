@@ -26,6 +26,7 @@ namespace ApplesGame
 	const char SYM_SEPARATE = '.';
 	const char SYM_TITLE = '=';
 	const unsigned int ROW_LENGTH = 50;
+	const std::string PLAYER_INDEX = "Player";
 
 	enum class EGameMode
 	{
