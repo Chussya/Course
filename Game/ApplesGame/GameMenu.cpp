@@ -1,4 +1,5 @@
 ﻿#include <cassert>
+#include "StateGameOver.h"
 #include "ExitDialog.h"
 #include "Constants.h"
 #include "GameMenu.h"
@@ -25,7 +26,6 @@ namespace ApplesGame
 					redrawWindow = true;
 				}
 			}
-
 			if (redrawWindow)
 			{
 				redrawWindow = false;
@@ -39,11 +39,11 @@ namespace ApplesGame
 		switch (keyEvent.code)
 		{
 		case sf::Keyboard::Space: {
-			LoadGame(gameMenu);
+			StartPlayingGame(gameMenu);
 			break;
 		}
 		case sf::Keyboard::Escape: {
-			LoadExitDialog(gameMenu);
+			StartExitDialog(gameMenu);
 			break;
 		}
 		default:
@@ -168,14 +168,41 @@ namespace ApplesGame
 		gameMenu.window.display();
 	}
 
-	void LoadGame(GameMenu& gameMenu)
+	void DeinitializeMenu(GameMenu& gameMenu)
+	{
+		if (gameMenu.window.isOpen())
+			gameMenu.window.close();
+
+		if (!gameMenu.records.empty())
+			gameMenu.records.clear();
+	}
+
+	void StartPlayingGame(GameMenu& gameMenu)
 	{
 		gameMenu.window.setVisible(false);
-		StartGame(gameMenu.gameSettings, gameMenu.records);
+
+		int resultOfGame = StartGame(gameMenu.gameSettings, gameMenu.playerScore);
+		
+		switch (static_cast<GameState>(resultOfGame))
+		{
+		case GameState::GameOver: {
+			// Acualize player's scores
+			if (gameMenu.records[PLAYER_INDEX] < *gameMenu.playerScore)
+			{
+				gameMenu.records[PLAYER_INDEX] = *gameMenu.playerScore;
+			}
+			SortByScores(gameMenu.records);
+
+			// Game over state
+			ShowGameOverWindow(gameMenu.records);
+		}
+		default:
+			break;
+		}
 		gameMenu.window.setVisible(true);
 	}
 
-	void LoadExitDialog(GameMenu& gameMenu)
+	void StartExitDialog(GameMenu& gameMenu)
 	{
 		gameMenu.window.setVisible(false);
 
@@ -202,5 +229,7 @@ namespace ApplesGame
 		DrawMenuWindow(gameMenu);
 
 		HandleGameMenuEvent(gameMenu);
+
+		DeinitializeMenu(gameMenu);
 	}
 }

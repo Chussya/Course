@@ -46,6 +46,9 @@
     <ClCompile Include="ExitDialog.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="StateGameOver.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -85,6 +88,9 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="ExitDialog.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="StateGameOver.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>

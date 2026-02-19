@@ -168,6 +168,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Record.cpp" />
     <ClCompile Include="SFX.cpp" />
+    <ClCompile Include="StateGameOver.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Util.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Record.h" />
     <ClInclude Include="SFX.h" />
+    <ClInclude Include="StateGameOver.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Util.h" />

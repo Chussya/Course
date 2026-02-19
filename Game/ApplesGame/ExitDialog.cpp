@@ -1,4 +1,5 @@
 #include <cassert>
+#include "GameSettings.h"
 #include "ExitDialog.h"
 
 namespace ApplesGame
@@ -27,7 +28,7 @@ namespace ApplesGame
 	void InitGameExitDialog(GameExitDialog& gameExitDialog)
 	{
 		// Init UI
-		gameExitDialog.window.create(sf::VideoMode(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), "Apples Game");
+		gameExitDialog.window.create(sf::VideoMode(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), "Apples Game");
 
 		assert(gameExitDialog.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
 
