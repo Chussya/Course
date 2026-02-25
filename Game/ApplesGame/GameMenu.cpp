@@ -59,37 +59,40 @@ namespace ApplesGame
 
 		assert(gameMenu.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
 
-		gameMenu.textTitle.setFont(gameMenu.font);
-		gameMenu.textTitle.setFillColor(sf::Color::White);
-		gameMenu.textTitle.setString("xXx APPLES GAME xXx");
-		gameMenu.textTitle.setCharacterSize(30);
-		sf::FloatRect rctOfText = gameMenu.textTitle.getLocalBounds();
-		gameMenu.textTitle.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		gameMenu.textTitle.setPosition(gameMenu.window.getSize().x / 2.f, 30.f);
+		gameMenu.titleTxt.setFont(gameMenu.font);
+		gameMenu.titleTxt.setFillColor(sf::Color::White);
+		gameMenu.titleTxt.setString("xXx APPLES GAME xXx");
+		gameMenu.titleTxt.setCharacterSize(30);
+		sf::FloatRect rctOfText = gameMenu.titleTxt.getLocalBounds();
+		gameMenu.titleTxt.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
+		gameMenu.titleTxt.setPosition(gameMenu.window.getSize().x / 2.f, 30.f);
 
-		gameMenu.textMode.setFont(gameMenu.font);
-		gameMenu.textMode.setFillColor(sf::Color::White);
-		gameMenu.textMode.setString("Mode[1-3]: ");
-		gameMenu.textMode.setCharacterSize(20);
-		rctOfText = gameMenu.textMode.getLocalBounds();
-		gameMenu.textMode.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		gameMenu.textMode.setPosition(gameMenu.window.getSize().x / 2.f, 100.f);
+		InitButtonItem(gameMenu.modeBtn, "Mode", gameMenu.font, sf::Color::White, 20);
+		//gameMenu.modeBtn.text.setFont(gameMenu.font);
+		//gameMenu.modeBtn.text.setFillColor(sf::Color::White);
+		//gameMenu.modeBtn.text.setString("Mode");
+		//gameMenu.modeBtn.text.setCharacterSize(20);
+		rctOfText = gameMenu.modeBtn.text.getLocalBounds();
+		gameMenu.modeBtn.text.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
+		gameMenu.modeBtn.text.setPosition(gameMenu.window.getSize().x / 2.f, 100.f);
+		//SetButtonOrigin(gameMenu.modeBtn, ButtonOrigin::Center);
+		//SetButtonPosition(gameMenu.modeBtn, gameMenu.window.getSize().x / 2.f, 100.f);
 
-		gameMenu.textApplesNum.setFont(gameMenu.font);
-		gameMenu.textApplesNum.setFillColor(sf::Color::White);
-		gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
-		gameMenu.textApplesNum.setCharacterSize(20);
-		rctOfText = gameMenu.textApplesNum.getLocalBounds();
-		gameMenu.textApplesNum.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		gameMenu.textApplesNum.setPosition(gameMenu.window.getSize().x / 2.f, 140.f);
+		//gameMenu.textApplesNum.setFont(gameMenu.font);
+		//gameMenu.textApplesNum.setFillColor(sf::Color::White);
+		//gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
+		//gameMenu.textApplesNum.setCharacterSize(20);
+		//rctOfText = gameMenu.textApplesNum.getLocalBounds();
+		//gameMenu.textApplesNum.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
+		//gameMenu.textApplesNum.setPosition(gameMenu.window.getSize().x / 2.f, 140.f);
 
-		gameMenu.textPlayExit.setFont(gameMenu.font);
-		gameMenu.textPlayExit.setFillColor(sf::Color::White);
-		gameMenu.textPlayExit.setCharacterSize(20);
-		gameMenu.textPlayExit.setString("Play [Space]\t\t\tExit [Esc]");
-		rctOfText = gameMenu.textPlayExit.getLocalBounds();
-		gameMenu.textPlayExit.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		gameMenu.textPlayExit.setPosition(gameMenu.window.getSize().x / 2.f, 180.f);
+		//gameMenu.textPlayExit.setFont(gameMenu.font);
+		//gameMenu.textPlayExit.setFillColor(sf::Color::White);
+		//gameMenu.textPlayExit.setCharacterSize(20);
+		//gameMenu.textPlayExit.setString("Play [Space]\t\t\tExit [Esc]");
+		//rctOfText = gameMenu.textPlayExit.getLocalBounds();
+		//gameMenu.textPlayExit.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
+		//gameMenu.textPlayExit.setPosition(gameMenu.window.getSize().x / 2.f, 180.f);
 
 		// Init Records
 		InitRecord(gameMenu.records);
@@ -99,26 +102,26 @@ namespace ApplesGame
 	{
 		switch (key)
 		{
-		case sf::Keyboard::Down: {
-			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
-				+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MIN ? NUM_APPLES_MIN : --gameMenu.gameSettings.numApples));
-			break;
-		}
-		case sf::Keyboard::Up: {
-			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
-				+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MAX ? NUM_APPLES_MAX : ++gameMenu.gameSettings.numApples));
-			break;
-		}
-		case sf::Keyboard::Left: {
-			gameMenu.gameSettings.numApples = 20;
-			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
-			break;
-		}
-		case sf::Keyboard::Right: {
-			gameMenu.gameSettings.numApples = NUM_APPLES_MAX;
-			gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
-			break;
-		}
+		//case sf::Keyboard::Down: {
+		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
+		//		+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MIN ? NUM_APPLES_MIN : --gameMenu.gameSettings.numApples));
+		//	break;
+		//}
+		//case sf::Keyboard::Up: {
+		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
+		//		+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MAX ? NUM_APPLES_MAX : ++gameMenu.gameSettings.numApples));
+		//	break;
+		//}
+		//case sf::Keyboard::Left: {
+		//	gameMenu.gameSettings.numApples = 20;
+		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
+		//	break;
+		//}
+		//case sf::Keyboard::Right: {
+		//	gameMenu.gameSettings.numApples = NUM_APPLES_MAX;
+		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
+		//	break;
+		//}
 		case sf::Keyboard::Num1: {
 			gameMenu.gameSettings.gameMode = ChangeGameMode(gameMenu.gameSettings.gameMode, static_cast<int>(EGameMode::ApplesInfinity));
 			break;
@@ -150,21 +153,22 @@ namespace ApplesGame
 			gameModeText += "Speed+;";
 		}
 
-		gameMenu.textMode.setString("Mode[1-3]: " + gameModeText);
+		//gameMenu.textMode.setString("Mode[1-3]: " + gameModeText);
 	}
 
 	void DrawMenuWindow(GameMenu& gameMenu)
 	{
 		gameMenu.window.clear();
-		gameMenu.window.draw(gameMenu.textTitle);
+		gameMenu.window.draw(gameMenu.titleTxt);
+		gameMenu.window.draw(gameMenu.modeBtn.text);
 
-		sf::FloatRect rctOfText = gameMenu.textMode.getLocalBounds();
-		gameMenu.textMode.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		gameMenu.textMode.setPosition(gameMenu.window.getSize().x / 2.f, 100.f);
+		//sf::FloatRect rctOfText = gameMenu.textMode.getLocalBounds();
+		//gameMenu.textMode.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
+		//gameMenu.textMode.setPosition(gameMenu.window.getSize().x / 2.f, 100.f);
 
-		gameMenu.window.draw(gameMenu.textMode);
-		gameMenu.window.draw(gameMenu.textApplesNum);
-		gameMenu.window.draw(gameMenu.textPlayExit);
+		//gameMenu.window.draw(gameMenu.textMode);
+		//gameMenu.window.draw(gameMenu.textApplesNum);
+		//gameMenu.window.draw(gameMenu.textPlayExit);
 		gameMenu.window.display();
 	}
 

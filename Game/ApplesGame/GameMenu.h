@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include "GameSettings.h"
+#include "ButtonItem.h"
 
 namespace ApplesGame
 {
@@ -14,10 +15,10 @@ namespace ApplesGame
 		sf::Font font;
 
 		// Menu text
-		sf::Text textTitle;
-		sf::Text textPlayExit;
-		sf::Text textMode;
-		sf::Text textApplesNum;
+		sf::Text titleTxt;
+		ButtonItem startBtn;
+		ButtonItem modeBtn;
+		ButtonItem exitBtn;
 
 		sf::RenderWindow window;
 
