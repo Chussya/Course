@@ -9,6 +9,7 @@ namespace ApplesGame
 {
 	struct GameMenu
 	{
+		bool isChanged = false;
 		int* playerScore;
 
 		// Font
@@ -30,6 +31,8 @@ namespace ApplesGame
 	// Event's functions
 	void HandleGameMenuEvent(GameMenu& gameMenu);
 	void HandleKeyboardEvent(sf::Event::KeyEvent keyEvent, GameMenu& gameMenu);
+	void HandleMouseMoveEvent(sf::Event::MouseMoveEvent event, GameMenu& gameMenu);
+	void HandleMouseClickEvent(sf::Event::MouseButtonEvent event, GameMenu& gameMenu);
 
 	// Standard functions
 	void InitMenu(GameMenu& gameMenu);

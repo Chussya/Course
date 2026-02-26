@@ -10,8 +10,6 @@ namespace ApplesGame
 {
 	void HandleGameMenuEvent(GameMenu& gameMenu)
 	{
-		bool redrawWindow = false;
-
 		while (gameMenu.window.isOpen())
 		{
 			sf::Event event;
@@ -23,20 +21,29 @@ namespace ApplesGame
 				if (event.type == sf::Event::KeyReleased)
 				{
 					HandleKeyboardEvent(event.key, gameMenu);
-					redrawWindow = true;
+					gameMenu.isChanged = true;
+				}
+				if (event.type == sf::Event::MouseMoved)
+				{
+					HandleMouseMoveEvent(event.mouseMove, gameMenu);
+					gameMenu.isChanged = true;
+				}
+				if (event.type == sf::Event::MouseButtonReleased)
+				{
+					HandleMouseClickEvent(event.mouseButton, gameMenu);
+					gameMenu.isChanged = true;
 				}
 			}
-			if (redrawWindow)
+			if (gameMenu.isChanged)
 			{
-				redrawWindow = false;
 				DrawMenuWindow(gameMenu);
 			}
 		}
 	}
 
-	void HandleKeyboardEvent(sf::Event::KeyEvent keyEvent, GameMenu& gameMenu)
+	void HandleKeyboardEvent(sf::Event::KeyEvent event, GameMenu& gameMenu)
 	{
-		switch (keyEvent.code)
+		switch (event.code)
 		{
 		case sf::Keyboard::Space: {
 			StartPlayingGame(gameMenu);
@@ -47,7 +54,61 @@ namespace ApplesGame
 			break;
 		}
 		default:
-			UpdateText(gameMenu, keyEvent.code);
+			UpdateText(gameMenu, event.code);
+			break;
+		}
+	}
+
+	void HandleMouseMoveEvent(sf::Event::MouseMoveEvent event, GameMenu& gameMenu)
+	{
+		Vector2D mousePosition = { static_cast<float>(event.x), static_cast<float>(event.y) };
+		sf::Color clr;
+
+		if (IsGotFocus(gameMenu.startBtn, mousePosition))
+		{
+			clr = sf::Color::Green;
+			HighlightButton(gameMenu.startBtn, clr);
+		}
+		else
+		{
+			UnhighlightButton(gameMenu.startBtn);
+		}
+
+		if (IsGotFocus(gameMenu.modeBtn, mousePosition))
+		{
+			clr = sf::Color::Yellow;
+			HighlightButton(gameMenu.modeBtn, clr);
+		}
+		else
+		{
+			UnhighlightButton(gameMenu.modeBtn);
+		}
+
+		if (IsGotFocus(gameMenu.exitBtn, mousePosition))
+		{
+			clr = sf::Color::Red;
+			HighlightButton(gameMenu.exitBtn, clr);
+		}
+		else
+		{
+			UnhighlightButton(gameMenu.exitBtn);
+		}
+	}
+
+	void HandleMouseClickEvent(sf::Event::MouseButtonEvent event, GameMenu& gameMenu)
+	{
+		switch (event.button)
+		{
+		case sf::Mouse::Left:
+		{
+			if (gameMenu.startBtn.isFocused)
+			{
+				UnhighlightButton(gameMenu.startBtn);
+				StartPlayingGame(gameMenu);
+			}
+			break;
+		}
+		default:
 			break;
 		}
 	}
@@ -67,32 +128,17 @@ namespace ApplesGame
 		gameMenu.titleTxt.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
 		gameMenu.titleTxt.setPosition(gameMenu.window.getSize().x / 2.f, 30.f);
 
-		InitButtonItem(gameMenu.modeBtn, "Mode", gameMenu.font, sf::Color::White, 20);
-		//gameMenu.modeBtn.text.setFont(gameMenu.font);
-		//gameMenu.modeBtn.text.setFillColor(sf::Color::White);
-		//gameMenu.modeBtn.text.setString("Mode");
-		//gameMenu.modeBtn.text.setCharacterSize(20);
-		rctOfText = gameMenu.modeBtn.text.getLocalBounds();
-		gameMenu.modeBtn.text.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		gameMenu.modeBtn.text.setPosition(gameMenu.window.getSize().x / 2.f, 100.f);
-		//SetButtonOrigin(gameMenu.modeBtn, ButtonOrigin::Center);
-		//SetButtonPosition(gameMenu.modeBtn, gameMenu.window.getSize().x / 2.f, 100.f);
+		InitButtonItem(gameMenu.startBtn, "Play", gameMenu.font, sf::Color::White, 20);
+		SetButtonOrigin(gameMenu.startBtn, ButtonOrigin::Center);
+		SetButtonPosition(gameMenu.startBtn, gameMenu.window.getSize().x / 2.f, 100.f);
 
-		//gameMenu.textApplesNum.setFont(gameMenu.font);
-		//gameMenu.textApplesNum.setFillColor(sf::Color::White);
-		//gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
-		//gameMenu.textApplesNum.setCharacterSize(20);
-		//rctOfText = gameMenu.textApplesNum.getLocalBounds();
-		//gameMenu.textApplesNum.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		//gameMenu.textApplesNum.setPosition(gameMenu.window.getSize().x / 2.f, 140.f);
+		InitButtonItem(gameMenu.modeBtn, "Options", gameMenu.font, sf::Color::White, 20);
+		SetButtonOrigin(gameMenu.modeBtn, ButtonOrigin::Center);
+		SetButtonPosition(gameMenu.modeBtn, gameMenu.window.getSize().x / 2.f, 150.f);
 
-		//gameMenu.textPlayExit.setFont(gameMenu.font);
-		//gameMenu.textPlayExit.setFillColor(sf::Color::White);
-		//gameMenu.textPlayExit.setCharacterSize(20);
-		//gameMenu.textPlayExit.setString("Play [Space]\t\t\tExit [Esc]");
-		//rctOfText = gameMenu.textPlayExit.getLocalBounds();
-		//gameMenu.textPlayExit.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		//gameMenu.textPlayExit.setPosition(gameMenu.window.getSize().x / 2.f, 180.f);
+		InitButtonItem(gameMenu.exitBtn, "Exit", gameMenu.font, sf::Color::White, 20);
+		SetButtonOrigin(gameMenu.exitBtn, ButtonOrigin::Center);
+		SetButtonPosition(gameMenu.exitBtn, gameMenu.window.getSize().x / 2.f, 200.f);
 
 		// Init Records
 		InitRecord(gameMenu.records);
@@ -152,23 +198,18 @@ namespace ApplesGame
 		{
 			gameModeText += "Speed+;";
 		}
-
-		//gameMenu.textMode.setString("Mode[1-3]: " + gameModeText);
 	}
 
 	void DrawMenuWindow(GameMenu& gameMenu)
 	{
 		gameMenu.window.clear();
 		gameMenu.window.draw(gameMenu.titleTxt);
+		gameMenu.window.draw(gameMenu.startBtn.text);
 		gameMenu.window.draw(gameMenu.modeBtn.text);
+		gameMenu.window.draw(gameMenu.exitBtn.text);
 
-		//sf::FloatRect rctOfText = gameMenu.textMode.getLocalBounds();
-		//gameMenu.textMode.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		//gameMenu.textMode.setPosition(gameMenu.window.getSize().x / 2.f, 100.f);
+		gameMenu.isChanged = false;
 
-		//gameMenu.window.draw(gameMenu.textMode);
-		//gameMenu.window.draw(gameMenu.textApplesNum);
-		//gameMenu.window.draw(gameMenu.textPlayExit);
 		gameMenu.window.display();
 	}
 

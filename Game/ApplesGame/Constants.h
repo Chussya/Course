@@ -28,6 +28,9 @@ namespace ApplesGame
 	const unsigned int ROW_LENGTH = 50;
 	const std::string PLAYER_INDEX = "Player";
 
+	// Visual
+	const int OUTLINE_THICKNESS = 1;
+
 	enum class EGameMode
 	{
 		ApplesInfinity = 1 << 0,	// Num 1 ==> Apples Infinity
