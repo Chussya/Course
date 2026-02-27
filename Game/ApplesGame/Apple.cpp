@@ -5,7 +5,7 @@ namespace ApplesGame
 {
 	void InitApple(Apple& apple, const Game& game)
 	{
-		apple.pos = GetRandPosInScreen(SCREEN_WIDTH, SCREEN_HEIGHT);
+		apple.pos = GetRandPosInScreen(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME);
 
 		// Init sprite
 		apple.sprite.setTexture(game.appleTexture);

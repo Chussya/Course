@@ -34,13 +34,10 @@
     <ClCompile Include="GameMenu.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameSettings.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Record.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Util.cpp">
+    <ClCompile Include="UtilString.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="ExitDialog.cpp">
@@ -50,6 +47,21 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="ButtonItem.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsWindow.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilGraphic.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TextItem.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilBitMask.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleButton.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,7 +99,7 @@
     <ClInclude Include="Record.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="Util.h">
+    <ClInclude Include="UtilString.h">
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="ExitDialog.h">
@@ -97,6 +109,21 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="ButtonItem.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsWindow.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilGraphic.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="TextItem.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilBitMask.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleButton.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>

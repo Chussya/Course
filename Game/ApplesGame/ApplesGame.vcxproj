@@ -163,16 +163,20 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameMenu.cpp" />
-    <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="ButtonItem.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="OptionsWindow.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Record.cpp" />
     <ClCompile Include="SFX.cpp" />
     <ClCompile Include="StateGameOver.cpp" />
     <ClCompile Include="Stone.cpp" />
+    <ClCompile Include="ToggleButton.cpp" />
+    <ClCompile Include="TextItem.cpp" />
     <ClCompile Include="UI.cpp" />
-    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="UtilBitMask.cpp" />
+    <ClCompile Include="UtilGraphic.cpp" />
+    <ClCompile Include="UtilString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
@@ -181,6 +185,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="ButtonItem.h" />
+    <ClInclude Include="OptionsWindow.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Player.h" />
@@ -188,8 +193,12 @@
     <ClInclude Include="SFX.h" />
     <ClInclude Include="StateGameOver.h" />
     <ClInclude Include="Stone.h" />
+    <ClInclude Include="ToggleButton.h" />
+    <ClInclude Include="TextItem.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="Util.h" />
+    <ClInclude Include="UtilBitMask.h" />
+    <ClInclude Include="UtilGraphic.h" />
+    <ClInclude Include="UtilString.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

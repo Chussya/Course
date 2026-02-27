@@ -2,7 +2,7 @@
 #include <string>
 #include "StateGameOver.h"
 #include "GameSettings.h"
-#include "Util.h"
+#include "UtilString.h"
 
 namespace ApplesGame
 {
@@ -29,7 +29,7 @@ namespace ApplesGame
 	void InitGameOver(StateGameOver& stateGameOver, std::unordered_map<std::string, int>& records)
 	{
 		// Init window
-		stateGameOver.window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Apples Game");
+		stateGameOver.window.create(sf::VideoMode(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME), "Apples Game");
 
 		// Init fonts
 		assert(stateGameOver.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
@@ -57,7 +57,7 @@ namespace ApplesGame
 		stateGameOver.gameOverText.setCharacterSize(40);
 		sf::FloatRect rctOfText = stateGameOver.gameOverText.getLocalBounds();
 		stateGameOver.gameOverText.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		stateGameOver.gameOverText.setPosition(SCREEN_WIDTH / 2, 100);
+		stateGameOver.gameOverText.setPosition(SCREEN_WIDTH_GAME / 2, 100);
 
 		stateGameOver.menuText.setFont(stateGameOver.font);
 		stateGameOver.menuText.setFillColor(sf::Color::White);
@@ -65,7 +65,7 @@ namespace ApplesGame
 		stateGameOver.menuText.setCharacterSize(20);
 		rctOfText = stateGameOver.menuText.getLocalBounds();
 		stateGameOver.menuText.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		stateGameOver.menuText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 50);
+		stateGameOver.menuText.setPosition(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME - 50);
 
 		stateGameOver.leaderBoardText.setFont(stateGameOver.recordsFont);
 		stateGameOver.leaderBoardText.setFillColor(sf::Color::White);
@@ -73,7 +73,7 @@ namespace ApplesGame
 		stateGameOver.leaderBoardText.setCharacterSize(20);
 		rctOfText = stateGameOver.leaderBoardText.getLocalBounds();
 		stateGameOver.leaderBoardText.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
-		stateGameOver.leaderBoardText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		stateGameOver.leaderBoardText.setPosition(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME / 2);
 	}
 
 	void DrawGameOverWindow(StateGameOver& stateGameOver)
