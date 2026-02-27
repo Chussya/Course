@@ -6,8 +6,12 @@ namespace ApplesGame
 	const std::string RESOURCES_PATH = "Resources/";
 
 	// Display
-	const int SCREEN_WIDTH = 800;
-	const int SCREEN_HEIGHT = 600;
+	const int SCREEN_WIDTH_GAME = 800;
+	const int SCREEN_HEIGHT_GAME = 600;
+	const int SCREEN_WIDTH_OPTIONS = 300;
+	const int SCREEN_HEIGHT_OPTIONS = 160;
+	const int SCREEN_WIDTH_EDIT = 300;
+	const int SCREEN_HEIGHT_EDIT = 100;
 
 	// Game
 	const float INITIAL_SPEED = 100.f;
@@ -30,11 +34,4 @@ namespace ApplesGame
 
 	// Visual
 	const int OUTLINE_THICKNESS = 1;
-
-	enum class EGameMode
-	{
-		ApplesInfinity = 1 << 0,	// Num 1 ==> Apples Infinity
-		Acceleration = 1 << 1,		// Num 2 ==> Acceleration Boost
-		Speed = 1 << 2				// Num 3 ==> Speed Boost
-	};
 }

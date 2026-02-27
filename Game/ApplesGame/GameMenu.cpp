@@ -1,5 +1,8 @@
 ﻿#include <cassert>
 #include "StateGameOver.h"
+#include "OptionsWindow.h"
+#include "UtilGraphic.h"
+#include "UtilBitMask.h"
 #include "ExitDialog.h"
 #include "Constants.h"
 #include "GameMenu.h"
@@ -54,7 +57,6 @@ namespace ApplesGame
 			break;
 		}
 		default:
-			UpdateText(gameMenu, event.code);
 			break;
 		}
 	}
@@ -67,31 +69,31 @@ namespace ApplesGame
 		if (IsGotFocus(gameMenu.startBtn, mousePosition))
 		{
 			clr = sf::Color::Green;
-			HighlightButton(gameMenu.startBtn, clr);
+			HighlightElement(gameMenu.startBtn, clr);
 		}
 		else
 		{
-			UnhighlightButton(gameMenu.startBtn);
+			UnhighlightElement(gameMenu.startBtn);
 		}
 
 		if (IsGotFocus(gameMenu.modeBtn, mousePosition))
 		{
 			clr = sf::Color::Yellow;
-			HighlightButton(gameMenu.modeBtn, clr);
+			HighlightElement(gameMenu.modeBtn, clr);
 		}
 		else
 		{
-			UnhighlightButton(gameMenu.modeBtn);
+			UnhighlightElement(gameMenu.modeBtn);
 		}
 
 		if (IsGotFocus(gameMenu.exitBtn, mousePosition))
 		{
 			clr = sf::Color::Red;
-			HighlightButton(gameMenu.exitBtn, clr);
+			HighlightElement(gameMenu.exitBtn, clr);
 		}
 		else
 		{
-			UnhighlightButton(gameMenu.exitBtn);
+			UnhighlightElement(gameMenu.exitBtn);
 		}
 	}
 
@@ -103,8 +105,18 @@ namespace ApplesGame
 		{
 			if (gameMenu.startBtn.isFocused)
 			{
-				UnhighlightButton(gameMenu.startBtn);
+				UnhighlightElement(gameMenu.startBtn);
 				StartPlayingGame(gameMenu);
+			}
+			else if (gameMenu.modeBtn.isFocused)
+			{
+				UnhighlightElement(gameMenu.modeBtn);
+				StartOptionsWindow(gameMenu.gameSettings);
+			}
+			else if (gameMenu.exitBtn.isFocused)
+			{
+				UnhighlightElement(gameMenu.exitBtn);
+				StartExitDialog(gameMenu);
 			}
 			break;
 		}
@@ -116,7 +128,7 @@ namespace ApplesGame
 	void InitMenu(GameMenu& gameMenu)
 	{
 		// Init UI
-		gameMenu.window.create(sf::VideoMode(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), "Apples Game");
+		gameMenu.window.create(sf::VideoMode(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME / 2), "Apples Game");
 
 		assert(gameMenu.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
 
@@ -128,76 +140,20 @@ namespace ApplesGame
 		gameMenu.titleTxt.setOrigin(rctOfText.width / 2.f, rctOfText.height / 2.f);
 		gameMenu.titleTxt.setPosition(gameMenu.window.getSize().x / 2.f, 30.f);
 
-		InitButtonItem(gameMenu.startBtn, "Play", gameMenu.font, sf::Color::White, 20);
-		SetButtonOrigin(gameMenu.startBtn, ButtonOrigin::Center);
-		SetButtonPosition(gameMenu.startBtn, gameMenu.window.getSize().x / 2.f, 100.f);
+		InitElement(gameMenu.startBtn, "Play", gameMenu.font, sf::Color::White, 20);
+		SetTextOrigin(gameMenu.startBtn.text, TextOrigin::Center);
+		SetElementPosition(gameMenu.startBtn, gameMenu.window.getSize().x / 2.f, 100.f);
 
-		InitButtonItem(gameMenu.modeBtn, "Options", gameMenu.font, sf::Color::White, 20);
-		SetButtonOrigin(gameMenu.modeBtn, ButtonOrigin::Center);
-		SetButtonPosition(gameMenu.modeBtn, gameMenu.window.getSize().x / 2.f, 150.f);
+		InitElement(gameMenu.modeBtn, "Options", gameMenu.font, sf::Color::White, 20);
+		SetTextOrigin(gameMenu.modeBtn.text, TextOrigin::Center);
+		SetElementPosition(gameMenu.modeBtn, gameMenu.window.getSize().x / 2.f, 150.f);
 
-		InitButtonItem(gameMenu.exitBtn, "Exit", gameMenu.font, sf::Color::White, 20);
-		SetButtonOrigin(gameMenu.exitBtn, ButtonOrigin::Center);
-		SetButtonPosition(gameMenu.exitBtn, gameMenu.window.getSize().x / 2.f, 200.f);
+		InitElement(gameMenu.exitBtn, "Exit", gameMenu.font, sf::Color::White, 20);
+		SetTextOrigin(gameMenu.exitBtn.text, TextOrigin::Center);
+		SetElementPosition(gameMenu.exitBtn, gameMenu.window.getSize().x / 2.f, 200.f);
 
 		// Init Records
 		InitRecord(gameMenu.records);
-	}
-
-	void UpdateText(GameMenu& gameMenu, sf::Keyboard::Key key)
-	{
-		switch (key)
-		{
-		//case sf::Keyboard::Down: {
-		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
-		//		+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MIN ? NUM_APPLES_MIN : --gameMenu.gameSettings.numApples));
-		//	break;
-		//}
-		//case sf::Keyboard::Up: {
-		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: "
-		//		+ std::to_string(gameMenu.gameSettings.numApples == NUM_APPLES_MAX ? NUM_APPLES_MAX : ++gameMenu.gameSettings.numApples));
-		//	break;
-		//}
-		//case sf::Keyboard::Left: {
-		//	gameMenu.gameSettings.numApples = 20;
-		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
-		//	break;
-		//}
-		//case sf::Keyboard::Right: {
-		//	gameMenu.gameSettings.numApples = NUM_APPLES_MAX;
-		//	gameMenu.textApplesNum.setString("Apples Num[Down/Up]: " + std::to_string(gameMenu.gameSettings.numApples));
-		//	break;
-		//}
-		case sf::Keyboard::Num1: {
-			gameMenu.gameSettings.gameMode = ChangeGameMode(gameMenu.gameSettings.gameMode, static_cast<int>(EGameMode::ApplesInfinity));
-			break;
-		}
-		case sf::Keyboard::Num2: {
-			gameMenu.gameSettings.gameMode = ChangeGameMode(gameMenu.gameSettings.gameMode, static_cast<int>(EGameMode::Acceleration));
-			break;
-		}
-		case sf::Keyboard::Num3: {
-			gameMenu.gameSettings.gameMode = ChangeGameMode(gameMenu.gameSettings.gameMode, static_cast<int>(EGameMode::Speed));
-			break;
-		}
-		default:
-			break;
-		}
-
-		std::string gameModeText{};
-
-		if (gameMenu.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
-		{
-			gameModeText = "ApplesInf;";
-		}
-		if (gameMenu.gameSettings.gameMode & static_cast<int>(EGameMode::Acceleration))
-		{
-			gameModeText += "Acceleration+;";
-		}
-		if (gameMenu.gameSettings.gameMode & static_cast<int>(EGameMode::Speed))
-		{
-			gameModeText += "Speed+;";
-		}
 	}
 
 	void DrawMenuWindow(GameMenu& gameMenu)

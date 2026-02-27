@@ -8,15 +8,18 @@ namespace ApplesGame
 	struct StateGameOver
 	{
 		// Font
+
 		sf::Font font;
 		sf::Font recordsFont;
 
 		// Text
+
 		sf::Text leaderBoardText;
 		sf::Text gameOverText;
 		sf::Text menuText;
 
 		// Window
+
 		sf::RenderWindow window;
 	};
 

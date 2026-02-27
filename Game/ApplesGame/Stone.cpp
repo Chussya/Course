@@ -7,7 +7,7 @@ namespace ApplesGame
 	{
 		for (int i = 0; i < NUM_STONES; ++i)
 		{
-			stone.pos = GetRandPosInScreen(SCREEN_WIDTH, SCREEN_HEIGHT);
+			stone.pos = GetRandPosInScreen(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME);
 
 			// Init sprite
 			stone.sprite.setTexture(game.stoneTexture);

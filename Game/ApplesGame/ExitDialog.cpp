@@ -28,7 +28,7 @@ namespace ApplesGame
 	void InitGameExitDialog(GameExitDialog& gameExitDialog)
 	{
 		// Init UI
-		gameExitDialog.window.create(sf::VideoMode(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3), "Apples Game");
+		gameExitDialog.window.create(sf::VideoMode(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME / 3), "Apples Game");
 
 		assert(gameExitDialog.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
 

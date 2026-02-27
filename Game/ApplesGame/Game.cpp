@@ -234,8 +234,8 @@ namespace ApplesGame
 		}
 
 		// Check borders' collision:
-		if (game.player.pos.y - PLAYER_SIZE / 2.f <= 0 || game.player.pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT
-			|| game.player.pos.x - PLAYER_SIZE / 2.f <= 0 || game.player.pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH)
+		if (game.player.pos.y - PLAYER_SIZE / 2.f <= 0 || game.player.pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT_GAME
+			|| game.player.pos.x - PLAYER_SIZE / 2.f <= 0 || game.player.pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH_GAME)
 		{
 			ChangeGameState(game.gameStateStack, GameState::GameOver);
 			AddGameState(game.gameStateStack, GameState::Death);
@@ -278,7 +278,7 @@ namespace ApplesGame
 	int StartGame(GameSettings& gameSettings, int*& playerScore)
 	{
 		// Init window
-		sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Apples Game");
+		sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME), "Apples Game");
 
 		// Game initialization
 		Game game;

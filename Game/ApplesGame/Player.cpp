@@ -6,7 +6,7 @@ namespace ApplesGame
 	void InitPlayer(Player& player, const Game& game)
 	{
 		// Init state
-		player.pos = { SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f };
+		player.pos = { SCREEN_WIDTH_GAME / 2.f, SCREEN_HEIGHT_GAME / 2.f };
 		player.speed = game.gameSettings.gameMode & static_cast<int>(EGameMode::Speed) ? INITIAL_SPEED + 100.f : INITIAL_SPEED;
 		player.acceleration = game.gameSettings.gameMode & static_cast<int>(EGameMode::Acceleration) ? INITIAL_ACCELERATION : 0.f;
 		player.direction = PlayerDirection::Right;

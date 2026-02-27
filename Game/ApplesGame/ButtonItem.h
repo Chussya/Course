@@ -4,27 +4,29 @@
 
 namespace ApplesGame
 {
-	enum class ButtonOrigin
-	{
-		LeftTop = 0,
-		MidTop,
-		RightTop,
-		Center,
-		LeftBottom,
-		MidBottom,
-		RightBottom,
-	};
-
 	struct ButtonItem
 	{
 		bool isFocused{ false };
 		sf::Text text;
 	};
 
-	void InitButtonItem(ButtonItem& button, std::string text, sf::Font& font, sf::Color colorText, unsigned int charSize);
-	void SetButtonOrigin(ButtonItem& button, ButtonOrigin buttonOrigin);
-	void SetButtonPosition(ButtonItem& button, float x, float y);
+	// Standard functions
+
+	void InitElement(ButtonItem& button, std::string text);
+	void InitElement(ButtonItem& button, std::string text, sf::Font& font, sf::Color colorText, unsigned int charSize);
+	void DrawElementOnWindow(ButtonItem& button, sf::RenderWindow& window);
+
+	// Set properties/values functions
+
+	void SetElementPosition(ButtonItem& button, float x, float y);
+
+	// Get properties/values functions
+
+	sf::Color GetColor(ButtonItem& button);
+
+	// Common functions
+
 	bool IsGotFocus(ButtonItem& button, Vector2D mousePos);
-	void HighlightButton(ButtonItem& button, sf::Color& color);
-	void UnhighlightButton(ButtonItem& button);
+	void HighlightElement(ButtonItem& button, sf::Color& color);
+	void UnhighlightElement(ButtonItem& button);
 }

@@ -23,7 +23,7 @@ namespace ApplesGame
 		ui.movementNote.setCharacterSize(20);
 		sf::FloatRect rctOfText = ui.movementNote.getLocalBounds();
 		ui.movementNote.setOrigin(rctOfText.width, 0);
-		ui.movementNote.setPosition(SCREEN_WIDTH - 1, 0);
+		ui.movementNote.setPosition(SCREEN_WIDTH_GAME - 1, 0);
 	}
 
 	void DrawUI(UI& ui, sf::RenderWindow& window)
