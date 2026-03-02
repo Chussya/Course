@@ -25,13 +25,10 @@
     <ClCompile Include="Game.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="SFX.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameMenu.cpp">
+    <ClCompile Include="GameStateMainMenu.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Record.cpp">
@@ -40,16 +37,16 @@
     <ClCompile Include="UtilString.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ExitDialog.cpp">
+    <ClCompile Include="GameStateExitDialog.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="StateGameOver.cpp">
+    <ClCompile Include="GameStateGameOver.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="ButtonItem.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="OptionsWindow.cpp">
+    <ClCompile Include="GameStateOptions.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="UtilGraphic.cpp">
@@ -62,6 +59,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="ToggleButton.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatePlaying.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,13 +84,10 @@
     <ClInclude Include="Game.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
     <ClInclude Include="SFX.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="GameMenu.h">
+    <ClInclude Include="GameStateMainMenu.h">
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="GameSettings.h">
@@ -102,16 +99,16 @@
     <ClInclude Include="UtilString.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="ExitDialog.h">
+    <ClInclude Include="GameStateExitDialog.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="StateGameOver.h">
+    <ClInclude Include="GameStateGameOver.h">
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="ButtonItem.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="OptionsWindow.h">
+    <ClInclude Include="GameStateOptions.h">
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="UtilGraphic.h">
@@ -124,6 +121,12 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="ToggleButton.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatePlaying.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatePause.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,17 +3,19 @@
 
 namespace ApplesGame
 {
+	// Path
+
 	const std::string RESOURCES_PATH = "Resources/";
 
 	// Display
+
 	const int SCREEN_WIDTH_GAME = 800;
 	const int SCREEN_HEIGHT_GAME = 600;
-	const int SCREEN_WIDTH_OPTIONS = 300;
-	const int SCREEN_HEIGHT_OPTIONS = 160;
 	const int SCREEN_WIDTH_EDIT = 300;
 	const int SCREEN_HEIGHT_EDIT = 100;
 
 	// Game
+
 	const float INITIAL_SPEED = 100.f;
 	const float BONUS_SPEED = 100.f;
 	const float INITIAL_ACCELERATION = 20.f;
@@ -26,12 +28,14 @@ namespace ApplesGame
 	const float APPLE_SIZE = 20.f;
 	const float STONE_SIZE = 20.f;
 
-	// Leaderboards
+	// Leaderboard
+
 	const char SYM_SEPARATE = '.';
 	const char SYM_TITLE = '=';
 	const unsigned int ROW_LENGTH = 50;
 	const std::string PLAYER_INDEX = "Player";
 
 	// Visual
+
 	const int OUTLINE_THICKNESS = 1;
 }

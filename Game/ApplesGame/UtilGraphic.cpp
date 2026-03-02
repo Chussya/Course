@@ -1,5 +1,7 @@
 #include "UtilGraphic.h"
 
+#include "Player.h"
+
 namespace ApplesGame
 {
 	void InitText(sf::Text& text, std::string s, sf::Font& font, sf::Color colorText, unsigned int charSize)
@@ -41,5 +43,32 @@ namespace ApplesGame
 			text.setOrigin(0.f, 0.f);
 			break;
 		}
+	}
+
+	void BalancedPlayerRotation(Player& player, PlayerDirection newDirection)
+	{
+		if (player.direction != newDirection)
+		{
+			player.sprite.setRotation((float)newDirection);
+
+			// Flip player's sprite per siding (left <-> right)
+			int width = (int)player.sprite.getTexture()->getSize().x;
+			int height = (int)player.sprite.getTexture()->getSize().y;
+
+			if (newDirection == PlayerDirection::Left)
+			{
+				player.sprite.setTextureRect(sf::IntRect(0, height, width, -height));
+			}
+			if (newDirection == PlayerDirection::Right)
+			{
+				player.sprite.setTextureRect(sf::IntRect(0, 0, width, height));
+			}
+		}
+	}
+
+	bool IsObjectColdidedBorders(Position2D pos)
+	{
+		return pos.y - PLAYER_SIZE / 2.f <= 0 || pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT_GAME
+			|| pos.x - PLAYER_SIZE / 2.f <= 0 || pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH_GAME;
 	}
 }

@@ -24,7 +24,7 @@ namespace ApplesGame
 	// Standard functions
 
 	void InitElement(TextItem& textItem, std::string s, sf::Font& font, sf::Color colorText, unsigned int charSize);
-	void DrawElement(TextItem& textItem, sf::RenderWindow& window);
+	void DrawElementOnWindow(TextItem& textItem, sf::RenderWindow& window);
 
 	// Set properties/values functions
 

@@ -1,5 +1,7 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
+
 #include "Math.h"
 
 namespace ApplesGame
@@ -12,8 +14,7 @@ namespace ApplesGame
 
 	// Standard functions
 
-	void InitElement(ButtonItem& button, std::string text);
-	void InitElement(ButtonItem& button, std::string text, sf::Font& font, sf::Color colorText, unsigned int charSize);
+	void InitElement(ButtonItem& button, std::string text, sf::Font& font, sf::Color colorText, sf::Color colorOutline, unsigned int charSize);
 	void DrawElementOnWindow(ButtonItem& button, sf::RenderWindow& window);
 
 	// Set properties/values functions
@@ -27,6 +28,6 @@ namespace ApplesGame
 	// Common functions
 
 	bool IsGotFocus(ButtonItem& button, Vector2D mousePos);
-	void HighlightElement(ButtonItem& button, sf::Color& color);
+	void HighlightElement(ButtonItem& button);
 	void UnhighlightElement(ButtonItem& button);
 }

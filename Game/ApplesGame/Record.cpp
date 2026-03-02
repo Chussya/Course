@@ -1,5 +1,6 @@
-#include <algorithm>
 #include "Record.h"
+
+#include <algorithm>
 
 namespace ApplesGame
 {
@@ -17,9 +18,9 @@ namespace ApplesGame
 		};
 	}
 
-	void SortByScores(std::unordered_map<std::string, int>& records)
+	Records SortByScores(std::unordered_map<std::string, int> records)
 	{
-		std::vector<std::pair<std::string, int>> vRecords(records.begin(), records.end());
+		Records vRecords(records.begin(), records.end());
 
 		// Insertion sort
 		for (auto iterator = vRecords.begin(); iterator != vRecords.end(); ++iterator)
@@ -39,13 +40,6 @@ namespace ApplesGame
 			}
 			iterator = mem;
 		}
-
-		// Reset map
-		records.clear();
-
-		for (const auto& pair : vRecords)
-		{
-			records.insert(pair);
-		}
+		return vRecords;
 	}
 }
