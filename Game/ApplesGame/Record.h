@@ -4,6 +4,8 @@
 
 namespace ApplesGame
 {
+	typedef std::vector<std::pair<std::string, int>> Records;
+
 	struct Record
 	{
 		std::string name;
@@ -11,5 +13,5 @@ namespace ApplesGame
 	};
 
 	void InitRecord(std::unordered_map<std::string, int>& records);
-	void SortByScores(std::unordered_map<std::string, int>& records);
+	Records SortByScores(std::unordered_map<std::string, int> records);
 }

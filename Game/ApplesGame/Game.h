@@ -1,73 +1,74 @@
 #pragma once
-#include <SFML/Audio.hpp>
 #include <unordered_map>
-#include "GameSettings.h"
+#include <SFML/Graphics.hpp>
+
 #include "Record.h"
-#include "Player.h"
-#include "Apple.h"
-#include "Stone.h"
-#include "UI.h"
-#include "SFX.h"
+#include "GameSettings.h"
 
 namespace ApplesGame
 {
-	enum class GameState
+	enum class GameStateType
 	{
 		None = 0,
 		Playing,
-		Death,
 		GameOver,
+		Leaderboard,
+		MainMenu,
+		Options,
+		Pause,
+		ExitDialog,
+		Exit,
+	};
+
+	struct GameState
+	{
+		GameStateType type = GameStateType::None;
+		void* data = nullptr;
+		bool isExclusivelyVisible = false;
+	};
+
+	enum class GameStateChangeType
+	{
+		None,
+		Push,
+		Pop,
+		Switch
 	};
 
 	struct Game
 	{
 		// Global data
 
+		int* ptrPlayerScores{ nullptr };
+
 		std::vector<GameState> gameStateStack;
-		int numEatenApples{ 0 };
+		GameStateChangeType gameStateChangeType = GameStateChangeType::None;
+		GameStateType pendingGameStateType = GameStateType::None;
+		bool pendingGameStateIsExclusivelyVisible = false;
+
 		GameSettings gameSettings;
-
-		Player player;
-		std::vector<Apple> apples;
-		std::vector<Stone> stones;
-
-		// Resources
-
-		sf::Texture playerTexture;
-		sf::Texture appleTexture;
-		sf::Texture stoneTexture;
-
-		// Sound
-
-		SFX sfx;
-
-		// UI
-
-		UI ui;
+		std::unordered_map<std::string, int> records;
 	};
 
-	// Event's functions
 
+	void InitGame(Game& game);
 	void HandleWindowEvents(Game& game, sf::RenderWindow& window);
+	bool UpdateGame(Game& game, float timeDelta); // Return false if game should be closed
+	void DrawGame(Game& game, sf::RenderWindow& window);
+	void ShutdownGame(Game& game);
 
-	// Standard functions
+	// Add new game state on top of the stack
+	void PushGameState(Game& game, GameStateType stateType, bool isExclusivelyVisible);
 
-	void InitGame(Game& game, GameSettings& gameSettings);
-	void UpdateGame(Game& game, float deltaTime);
-	void DrawGame(sf::RenderWindow& window, Game& game);
-	void DeinitializeGame(Game& game);
+	// Remove current game state from the stack
+	void PopGameState(Game& game);
 
-	// Game state logic
+	// Remove all game states from the stack and add new one
+	void SwitchGameState(Game& game, GameStateType newState);
 
-	void GameStatePlaying(Game& game, sf::RenderWindow& window, float currentTime);
-	void GameStateDeath(Game& game);
-	void GameStateGameOver(Game& game, sf::RenderWindow& window);
-	void ChangeGameState(std::vector<GameState>& stack, GameState gameState);
-	void AddGameState(std::vector<GameState>& stack, GameState gameState);
-	void RemoveGameState(std::vector<GameState>& stack);
-	GameState GetGameState(std::vector<GameState>& stack);
-
-	// Main function. Returns game's state in the end of game
-
-	int StartGame(GameSettings& gameSettings, int*& playerScore);
+	void InitGameState(Game& game, GameState& state);
+	void ShutdownGameState(Game& game, GameState& state);
+	void HandleWindowEventGameState(Game& game, GameState& state, sf::Event& event);
+	void UpdateGameState(Game& game, GameState& state, float timeDelta);
+	void DrawGameState(Game& game, GameState& state, sf::RenderWindow& window);
 }

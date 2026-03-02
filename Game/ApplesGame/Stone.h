@@ -13,6 +13,7 @@ namespace ApplesGame
 
 	struct Game;
 
-	void InitStone(Stone& stone, const Game& game);
+	void InitStone(Stone& stone, const Game& game, const sf::Texture& texture);
 	void DrawStone(Stone& stone, sf::RenderWindow& window);
+	bool IsStoneCollidedPlayer(Stone& stone, Position2D& playerPos);
 }

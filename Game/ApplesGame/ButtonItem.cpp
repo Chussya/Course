@@ -1,19 +1,16 @@
 #include "ButtonItem.h"
+
 #include "Constants.h"
 
 namespace ApplesGame
 {
-	void InitElement(ButtonItem& button, std::string text)
-	{
-		button.text.setString(text);
-	}
-
-	void InitElement(ButtonItem& button, std::string text, sf::Font& font, sf::Color colorText, unsigned int charSize)
+	void InitElement(ButtonItem& button, std::string text, sf::Font& font, sf::Color colorText, sf::Color colorOutline, unsigned int charSize)
 	{
 		button.text.setFont(font);
 		button.text.setFillColor(colorText);
 		button.text.setString(text);
 		button.text.setCharacterSize(charSize);
+		button.text.setOutlineColor(colorOutline);
 	}
 
 	void DrawElementOnWindow(ButtonItem& button, sf::RenderWindow& window)
@@ -41,9 +38,8 @@ namespace ApplesGame
 		return button.isFocused;
 	}
 
-	void HighlightElement(ButtonItem& button, sf::Color& color)
+	void HighlightElement(ButtonItem& button)
 	{
-		button.text.setOutlineColor(color);
 		button.text.setOutlineThickness(OUTLINE_THICKNESS);
 	}
 

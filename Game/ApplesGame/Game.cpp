@@ -1,292 +1,325 @@
-#include <cassert>
 #include "Game.h"
+
+#include <cassert>
+
 #include "Record.h"
+#include "GameStateMainMenu.h"
+#include "GameStateOptions.h"
+#include "GameStatePlaying.h"
+#include "GameStateGameOver.h"
+#include "GameStateExitDialog.h"
 
 namespace ApplesGame
 {
-	void InitGame(Game& game, GameSettings& gameSettings)
+	void InitGame(Game& game)
 	{
-		assert(game.playerTexture.loadFromFile(RESOURCES_PATH + "Player.png"));
-		assert(game.appleTexture.loadFromFile(RESOURCES_PATH + "Apple.png"));
-		assert(game.stoneTexture.loadFromFile(RESOURCES_PATH + "Rock.png"));
+		// Generate fake records table
+		InitRecord(game.records);
 
-		// Init settings
-		game.gameSettings = gameSettings;
-
-		// Init sounds
-		InitSounds(game.sfx);
-
-		// Init text scores
-		InitUI(game.ui);
-
-		// Init player
-		InitPlayer(game.player, game);
-
-		// Init apples:
-		game.apples.resize(game.gameSettings.numApples);
-		for (Apple& apple : game.apples)
-		{
-			InitApple(apple, game);
-		}
-
-		// Init stones:
-		game.stones.resize(NUM_STONES);
-		for (Stone& stone : game.stones)
-		{
-			InitStone(stone, game);
-		}
-
-		// Game cicle:
-		ChangeGameState(game.gameStateStack, GameState::Playing);
-		game.numEatenApples = 0;
-	}
-
-	void GameStatePlaying(Game& game, sf::RenderWindow& window, float deltaTime)
-	{
-		// Read events
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed
-				|| event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape)
-			{
-				RemoveGameState(game.gameStateStack);
-				break;
-			}
-		}
-
-		// Update game state
-		UpdateGame(game, deltaTime);
-
-		window.clear();
-
-		// Draw game
-		DrawGame(window, game);
-
-		window.display();
-	}
-
-	void GameStateDeath(Game& game)
-	{
-		PlaySoundUntilEnd(game.sfx.deathSound);
-		RemoveGameState(game.gameStateStack);
-	}
-
-	void GameStateGameOver(Game& game, sf::RenderWindow& window)
-	{
-		// Denitialization
-		DeinitializeGame(game);
-		window.close();
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.pendingGameStateIsExclusivelyVisible = false;
+		SwitchGameState(game, GameStateType::MainMenu);
 	}
 
 	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
 	{
-		// Init game time
-		sf::Clock gameClock;
-		float lastTime{ gameClock.getElapsedTime().asSeconds() };
-
-		// Main loop
-		while (window.isOpen())
+		sf::Event event;
+		while (window.pollEvent(event))
 		{
-			switch (GetGameState(game.gameStateStack))
+			// Close window if close button or Escape key pressed
+			if (event.type == sf::Event::Closed)
 			{
-			case GameState::Playing: {
-				// Calculate time delta
-				float currentTime = gameClock.getElapsedTime().asSeconds();
-				float deltaTime = currentTime - lastTime;
-
-				lastTime = currentTime;
-
-				GameStatePlaying(game, window, deltaTime);
-				break;
-			}
-			case GameState::Death: {
-				GameStateDeath(game);
-				break;
-			}
-			case GameState::GameOver: {
-				GameStateGameOver(game, window);
-				break;
-			}
-			default:
 				window.close();
-				break;
+			}
+
+			if (game.gameStateStack.size() > 0)
+			{
+				HandleWindowEventGameState(game, game.gameStateStack.back(), event);
 			}
 		}
 	}
 
-	void ChangeGameState(std::vector<GameState>& stack, GameState gameState)
+	bool UpdateGame(Game& game, float timeDelta)
 	{
-		if (stack.size() > 0)
+		if (game.gameStateChangeType == GameStateChangeType::Switch)
 		{
-			stack.pop_back();
+			// Shutdown all game states
+			while (game.gameStateStack.size() > 0)
+			{
+				ShutdownGameState(game, game.gameStateStack.back());
+				game.gameStateStack.pop_back();
+			}
 		}
-		stack.push_back(gameState);
+		else if (game.gameStateChangeType == GameStateChangeType::Pop)
+		{
+			// Shutdown only current game state
+			if (game.gameStateStack.size() > 0)
+			{
+				ShutdownGameState(game, game.gameStateStack.back());
+				game.gameStateStack.pop_back();
+			}
+		}
+
+		// Initialize new game state if needed
+		if (game.pendingGameStateType != GameStateType::None && game.pendingGameStateType != GameStateType::Exit)
+		{
+			game.gameStateStack.push_back({ game.pendingGameStateType, nullptr, game.pendingGameStateIsExclusivelyVisible });
+			InitGameState(game, game.gameStateStack.back());
+		}
+
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.pendingGameStateIsExclusivelyVisible = false;
+
+		if (game.gameStateStack.size() > 0)
+		{
+			UpdateGameState(game, game.gameStateStack.back(), timeDelta);
+			return true;
+		}
+		return false;
 	}
 
-	void AddGameState(std::vector<GameState>& stack, GameState gameState)
+	void DrawGame(Game& game, sf::RenderWindow& window)
 	{
-		stack.push_back(gameState);
-	}
+		if (game.gameStateStack.size() > 0)
+		{
+			std::vector<GameState*> visibleGameStates;
+			for (auto it = game.gameStateStack.rbegin(); it != game.gameStateStack.rend(); ++it)
+			{
+				visibleGameStates.push_back(&(*it));
+				if (it->isExclusivelyVisible)
+				{
+					break;
+				}
+			}
 
-	void RemoveGameState(std::vector<GameState>& stack)
-	{
-		if (stack.size() > 0)
-		{
-			stack.pop_back();
-		}
-		if (stack.size() == 0)
-		{
-			stack.push_back(GameState::None);
-		}
-	}
-
-	GameState GetGameState(std::vector<GameState>& stack)
-	{
-		if (stack.size() > 0)
-		{
-			return stack.back();
-		}
-		else
-		{
-			AddGameState(stack, GameState::None);
+			for (auto it = visibleGameStates.rbegin(); it != visibleGameStates.rend(); ++it)
+			{
+				DrawGameState(game, **it, window);
+			}
 		}
 	}
 
-	void UpdateGame(Game& game, float deltaTime)
+	void ShutdownGame(Game& game)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		// Shutdown all game states
+		while (game.gameStateStack.size() > 0)
 		{
-			RotatePlayer(game.player, PlayerDirection::Right);
-			game.player.direction = PlayerDirection::Right;
-		} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			RotatePlayer(game.player, PlayerDirection::Up);
-			game.player.direction = PlayerDirection::Up;
-		} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			RotatePlayer(game.player, PlayerDirection::Left);
-			game.player.direction = PlayerDirection::Left;
-		} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			RotatePlayer(game.player, PlayerDirection::Down);
-			game.player.direction = PlayerDirection::Down;
+			ShutdownGameState(game, game.gameStateStack.back());
+			game.gameStateStack.pop_back();
 		}
 
-		// Move player:
-		switch (game.player.direction)
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.pendingGameStateIsExclusivelyVisible = false;
+	}
+
+	void PushGameState(Game& game, GameStateType stateType, bool isExclusivelyVisible)
+	{
+		game.pendingGameStateType = stateType;
+		game.pendingGameStateIsExclusivelyVisible = isExclusivelyVisible;
+		game.gameStateChangeType = GameStateChangeType::Push;
+	}
+
+	void PopGameState(Game& game)
+	{
+		game.pendingGameStateType = GameStateType::None;
+		game.pendingGameStateIsExclusivelyVisible = false;
+		game.gameStateChangeType = GameStateChangeType::Pop;
+	}
+
+	void SwitchGameState(Game& game, GameStateType newState)
+	{
+		game.pendingGameStateType = newState;
+		game.pendingGameStateIsExclusivelyVisible = false;
+		game.gameStateChangeType = GameStateChangeType::Switch;
+	}
+
+	void InitGameState(Game& game, GameState& state)
+	{
+		switch (state.type)
 		{
-		case PlayerDirection::Right: {
-			game.player.pos.x += game.player.speed * deltaTime;
+		case GameStateType::MainMenu:
+		{
+			state.data = new GameStateMainMenuData();
+			InitGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
 			break;
 		}
-		case PlayerDirection::Up: {
-			game.player.pos.y -= game.player.speed * deltaTime;
+		case GameStateType::Options:
+		{
+			state.data = new GameStateOptionsData();
+			InitGameStateOptions(*(GameStateOptionsData*)state.data, game);
 			break;
 		}
-		case PlayerDirection::Left: {
-			game.player.pos.x -= game.player.speed * deltaTime;
+		case GameStateType::Playing:
+		{
+			state.data = new GameStatePlayingData();
+			InitGameStatePlaying(*(GameStatePlayingData*)state.data, game);
 			break;
 		}
-		case PlayerDirection::Down: {
-			game.player.pos.y += game.player.speed * deltaTime;
+		case GameStateType::GameOver:
+		{
+			state.data = new GameStateGameOverData();
+			InitGameStateGameOver(*(GameStateGameOverData*)state.data, game);
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			state.data = new GameStateExitDialogData();
+			InitGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
 			break;
 		}
 		default:
-			// Nothing to go...
+			assert(false); // We want to know if we forgot to implement new game statee
+			break;
+		}
+	}
+
+	void ShutdownGameState(Game& game, GameState& state)
+	{
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			ShutdownGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
+			delete (GameStateMainMenuData*)state.data;
+			break;
+		}
+		case GameStateType::Options:
+		{
+			ShutdownGameStateOptions(*(GameStateOptionsData*)state.data, game);
+			delete (GameStateOptionsData*)state.data;
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			ShutdownGameStatePlaying(*(GameStatePlayingData*)state.data, game);
+			delete (GameStatePlayingData*)state.data;
+			break;
+		}
+		case GameStateType::GameOver:
+		{
+			ShutdownGameStateGameOver(*(GameStateGameOverData*)state.data, game);
+			delete (GameStateGameOverData*)state.data;
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			ShutdownGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
+			delete (GameStateExitDialogData*)state.data;
+			break;
+		}
+		default:
+			assert(false); // We want to know if we forgot to implement new game statee
 			break;
 		}
 
-		// Check apples' collision:
-		for (Apple& apple : game.apples)
+		state.data = nullptr;
+	}
+
+	void HandleWindowEventGameState(Game& game, GameState& state, sf::Event& event)
+	{
+		switch (state.type)
 		{
-			if (apple.pos.x >= 0 && IsCirclesCollide(game.player.pos, PLAYER_SIZE / 2.f, apple.pos, APPLE_SIZE / 2.f))
-			{
-				UpdateScores(game.ui, ++game.numEatenApples);
-
-				game.sfx.eatSound.play();
-
-				// If not infinity mode - finish game
-				if (!(game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
-					&& game.numEatenApples == game.gameSettings.numApples)
-				{
-					ChangeGameState(game.gameStateStack, GameState::GameOver);
-					break;
-				}
-
-				// Acceleration boost
-				if (game.gameSettings.gameMode & static_cast<int>(EGameMode::Acceleration))
-				{
-					game.player.speed += (game.player.acceleration * deltaTime * DELTA_TIME_CORRECT);
-				}
-
-				// Respawn apple
-				if (game.gameSettings.gameMode & static_cast<int>(EGameMode::ApplesInfinity))
-				{
-					InitApple(apple, game);
-				}
-				// Hide apple
-				else
-				{
-					apple.pos = { -10.f, -10.f };
-				}
-			}
+		case GameStateType::MainMenu:
+		{
+			HandleGameStateMainMenuWindowEvent(*(GameStateMainMenuData*)state.data, game, event);
+			break;
 		}
-
-		// Check borders' collision:
-		if (game.player.pos.y - PLAYER_SIZE / 2.f <= 0 || game.player.pos.y + PLAYER_SIZE / 2.f >= SCREEN_HEIGHT_GAME
-			|| game.player.pos.x - PLAYER_SIZE / 2.f <= 0 || game.player.pos.x + PLAYER_SIZE / 2.f >= SCREEN_WIDTH_GAME)
+		case GameStateType::Options:
 		{
-			ChangeGameState(game.gameStateStack, GameState::GameOver);
-			AddGameState(game.gameStateStack, GameState::Death);
-			return;
+			HandleGameStateOptionsWindowEvent(*(GameStateOptionsData*)state.data, game, event);
+			break;
 		}
-
-		// Check stones' collision:
-		for (Stone& stone : game.stones)
+		case GameStateType::Playing:
 		{
-			if (IsRectanglesCollide(game.player.pos, { PLAYER_SIZE, PLAYER_SIZE }, stone.pos, { STONE_SIZE, STONE_SIZE }))
-			{
-				ChangeGameState(game.gameStateStack, GameState::GameOver);
-				AddGameState(game.gameStateStack, GameState::Death);
-				break;
-			}
+			HandleGameStatePlayingWindowEvent(*(GameStatePlayingData*)state.data, game, event);
+			break;
+		}
+		case GameStateType::GameOver:
+		{
+			HandleGameStateGameOverWindowEvent(*(GameStateGameOverData*)state.data, game, event);
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			HandleGameStateExitDialogWindowEvent(*(GameStateExitDialogData*)state.data, game, event);
+			break;
+		}
+		default:
+			assert(false); // We want to know if we forgot to implement new game statee
+			break;
 		}
 	}
 
-	void DrawGame(sf::RenderWindow& window, Game& game)
+	void UpdateGameState(Game& game, GameState& state, float timeDelta)
 	{
-		// Draw objects:
-		for (Apple& apple : game.apples)
+		switch (state.type)
 		{
-			DrawApple(apple, window);
-		}
-		for (Stone& stone : game.stones)
+		case GameStateType::MainMenu:
 		{
-			DrawStone(stone, window);
+			UpdateGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, timeDelta);
+			break;
 		}
-		DrawPlayer(game.player, window);
-		DrawUI(game.ui, window);
+		case GameStateType::Options:
+		{
+			UpdateGameStateOptions(*(GameStateOptionsData*)state.data, game, timeDelta);
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			UpdateGameStatePlaying(*(GameStatePlayingData*)state.data, game, timeDelta);
+			break;
+		}
+		case GameStateType::GameOver:
+		{
+			UpdateGameStateGameOver(*(GameStateGameOverData*)state.data, game, timeDelta);
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			UpdateGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, timeDelta);
+			break;
+		}
+		default:
+			assert(false); // We want to know if we forgot to implement new game statee
+			break;
+		}
 	}
 
-	void DeinitializeGame(Game& game)
+	void DrawGameState(Game& game, GameState& state, sf::RenderWindow& window)
 	{
-		game.apples.clear();
-		game.stones.clear();
-	}
-
-	int StartGame(GameSettings& gameSettings, int*& playerScore)
-	{
-		// Init window
-		sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME), "Apples Game");
-
-		// Game initialization
-		Game game;
-		InitGame(game, gameSettings);
-		playerScore = &game.numEatenApples;
-
-		HandleWindowEvents(game, window);
-
-		return static_cast<int>(GetGameState(game.gameStateStack));
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			DrawGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::Options:
+		{
+			DrawGameStateOptions(*(GameStateOptionsData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			DrawGameStatePlaying(*(GameStatePlayingData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::GameOver:
+		{
+			DrawGameStateGameOver(*(GameStateGameOverData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			DrawGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, window);
+			break;
+		}
+		default:
+			assert(false); // We want to know if we forgot to implement new game statee
+			break;
+		}
 	}
 }

@@ -60,7 +60,7 @@ namespace ApplesGame
 		textItem.text.setPosition(x, y);
 	}
 
-	void DrawElement(TextItem& textItem, sf::RenderWindow& window)
+	void DrawElementOnWindow(TextItem& textItem, sf::RenderWindow& window)
 	{
 		window.draw(textItem.text);
 	}

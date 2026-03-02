@@ -3,19 +3,38 @@
 
 namespace ApplesGame
 {
-	void InitApple(Apple& apple, const Game& game)
+	void InitApple(Apple& apple, const Game& game, const sf::Texture& texture)
 	{
 		apple.pos = GetRandPosInScreen(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME);
 
 		// Init sprite
-		apple.sprite.setTexture(game.appleTexture);
+		apple.sprite.setTexture(texture);
 		SetSpriteSize(apple.sprite, APPLE_SIZE, APPLE_SIZE);
 		SetSpriteRelativeOrigin(apple.sprite, 0.5f, 0.5f);
 	}
 
 	void DrawApple(Apple& apple, sf::RenderWindow& window)
 	{
+		if (apple.isEaten)
+		{
+			return;
+		}
 		apple.sprite.setPosition(apple.pos.x, apple.pos.y);
 		window.draw(apple.sprite);
+	}
+
+	void RespawnApple(Apple& apple)
+	{
+		apple.pos = GetRandPosInScreen(SCREEN_WIDTH_GAME, SCREEN_HEIGHT_GAME);
+	}
+
+	void RemoveApple(Apple& apple)
+	{
+		apple.isEaten = true;
+	}
+
+	bool IsAppleCollidedPlayer(Apple& apple, Position2D& playerPos)
+	{
+		return IsCirclesCollide(playerPos, PLAYER_SIZE / 2.f, apple.pos, APPLE_SIZE / 2.f);
 	}
 }

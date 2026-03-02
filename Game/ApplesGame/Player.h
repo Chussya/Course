@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
 #include "Math.h"
 #include "Constants.h"
 
@@ -24,7 +25,8 @@ namespace ApplesGame
 
 	struct Game;
 
-	void InitPlayer(Player& player, const Game& game);
+	void InitPlayer(Player& player, const Game& game, const sf::Texture& texture);
 	void DrawPlayer(Player& player, sf::RenderWindow& window);
-	void RotatePlayer(Player& player, PlayerDirection newDirection);
+	void UpdatePlayer(Player& player, float timeDelta);
+	void SpeedUpPlayer(Player& player, float timeDelta);
 }
