@@ -6,6 +6,7 @@
 #include "GameStateMainMenu.h"
 #include "GameStateOptions.h"
 #include "GameStatePlaying.h"
+#include "GameStatePause.h"
 #include "GameStateGameOver.h"
 #include "GameStateExitDialog.h"
 
@@ -158,6 +159,12 @@ namespace ApplesGame
 			InitGameStatePlaying(*(GameStatePlayingData*)state.data, game);
 			break;
 		}
+		case GameStateType::Pause:
+		{
+			state.data = new GameStatePauseData();
+			InitGameStatePause(*(GameStatePauseData*)state.data, game);
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			state.data = new GameStateGameOverData();
@@ -196,6 +203,12 @@ namespace ApplesGame
 		{
 			ShutdownGameStatePlaying(*(GameStatePlayingData*)state.data, game);
 			delete (GameStatePlayingData*)state.data;
+			break;
+		}
+		case GameStateType::Pause:
+		{
+			ShutdownGameStatePause(*(GameStatePauseData*)state.data, game);
+			delete (GameStatePauseData*)state.data;
 			break;
 		}
 		case GameStateType::GameOver:
@@ -237,6 +250,11 @@ namespace ApplesGame
 			HandleGameStatePlayingWindowEvent(*(GameStatePlayingData*)state.data, game, event);
 			break;
 		}
+		case GameStateType::Pause:
+		{
+			HandleGameStatePauseWindowEvent(*(GameStatePauseData*)state.data, game, event);
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			HandleGameStateGameOverWindowEvent(*(GameStateGameOverData*)state.data, game, event);
@@ -272,6 +290,11 @@ namespace ApplesGame
 			UpdateGameStatePlaying(*(GameStatePlayingData*)state.data, game, timeDelta);
 			break;
 		}
+		case GameStateType::Pause:
+		{
+			UpdateGameStatePause(*(GameStatePauseData*)state.data, game, timeDelta);
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			UpdateGameStateGameOver(*(GameStateGameOverData*)state.data, game, timeDelta);
@@ -305,6 +328,11 @@ namespace ApplesGame
 		case GameStateType::Playing:
 		{
 			DrawGameStatePlaying(*(GameStatePlayingData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::Pause:
+		{
+			DrawGameStatePause(*(GameStatePauseData*)state.data, game, window);
 			break;
 		}
 		case GameStateType::GameOver:

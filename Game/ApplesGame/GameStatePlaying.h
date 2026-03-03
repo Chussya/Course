@@ -38,7 +38,7 @@ namespace ApplesGame
 		sf::Text movementNote;
 	};
 
-	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, sf::Event event);
+	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, const sf::Event event);
 
 	void InitGameStatePlaying(GameStatePlayingData& data, Game& game);
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window);

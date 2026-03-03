@@ -28,7 +28,7 @@ namespace ApplesGame
 		}
 	}
 
-	void HandleGameStateOptionsKeyboardEvent(sf::Event::KeyEvent event, GameStateOptionsData& data, Game& game)
+	void HandleGameStateOptionsKeyboardEvent(const sf::Event::KeyEvent event, GameStateOptionsData& data, Game& game)
 	{
 		if (event.code == sf::Keyboard::Escape)
 		{
@@ -36,7 +36,7 @@ namespace ApplesGame
 		}
 	}
 
-	void HandleGameStateOptionsMouseMoveEvent(sf::Event::MouseMoveEvent event, GameStateOptionsData& data, Game& game)
+	void HandleGameStateOptionsMouseMoveEvent(const sf::Event::MouseMoveEvent event, GameStateOptionsData& data, Game& game)
 	{
 		Vector2D mousePosition = { static_cast<float>(event.x), static_cast<float>(event.y) };
 
@@ -52,7 +52,7 @@ namespace ApplesGame
 		}
 	}
 
-	void HandleGameStateOptionsMouseClickEvent(sf::Event::MouseButtonEvent event, GameStateOptionsData& data, Game& game)
+	void HandleGameStateOptionsMouseClickEvent(const sf::Event::MouseButtonEvent event, GameStateOptionsData& data, Game& game)
 	{
 		Vector2D mousePos = { static_cast<float>(event.x), static_cast<float>(event.y) };
 

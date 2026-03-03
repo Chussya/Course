@@ -7,13 +7,17 @@
 
 namespace ApplesGame
 {
-	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, sf::Event event)
+	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, const sf::Event event)
 	{
 		if (event.type == sf::Event::KeyReleased)
 		{
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				PushGameState(game, GameStateType::ExitDialog, true);
+			}
+			else if (event.key.code == sf::Keyboard::P)
+			{
+				PushGameState(game, GameStateType::Pause, true);
 			}
 		}
 	}
