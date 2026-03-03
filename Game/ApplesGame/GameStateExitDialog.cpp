@@ -29,11 +29,13 @@ namespace ApplesGame
 	{
 		switch (event.code)
 		{
-		case sf::Keyboard::Y: {
+		case sf::Keyboard::Y:
+		{
 			SwitchGameState(game, GameStateType::Exit);
 			break;
 		}
-		case sf::Keyboard::N: {
+		case sf::Keyboard::N:
+		{
 			PopGameState(game);
 			break;
 		}

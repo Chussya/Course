@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <unordered_map>
 
 namespace ApplesGame
 {
@@ -23,10 +22,10 @@ namespace ApplesGame
 		sf::Text menuText;
 	};
 
-	void HandleGameStateGameOverWindowEvent(GameStateGameOverData& gameStateGameOver, Game& game, const sf::Event event);
+	void HandleGameStateGameOverWindowEvent(GameStateGameOverData& data, Game& game, const sf::Event event);
 
-	void InitGameStateGameOver(GameStateGameOverData& gameStateGameOver, Game& game);
-	void DrawGameStateGameOver(GameStateGameOverData& gameStateGameOver, Game& game, sf::RenderWindow& window);
+	void InitGameStateGameOver(GameStateGameOverData& data, Game& game);
+	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window);
 	void UpdateGameStateGameOver(GameStateGameOverData& data, Game& game, float timeDelta);
 	void ShutdownGameStateGameOver(GameStateGameOverData& data, Game& game);
 }

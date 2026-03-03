@@ -164,6 +164,7 @@
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameStateMainMenu.cpp" />
     <ClCompile Include="ButtonItem.cpp" />
+    <ClCompile Include="GameStatePause.cpp" />
     <ClCompile Include="GameStatePlaying.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="GameStateOptions.cpp" />

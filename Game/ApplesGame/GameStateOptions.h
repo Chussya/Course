@@ -38,9 +38,9 @@ namespace ApplesGame
 	// Event's functions
 
 	void HandleGameStateOptionsWindowEvent(GameStateOptionsData& data, Game& game, const sf::Event event);
-	void HandleGameStateOptionsKeyboardEvent(sf::Event::KeyEvent event, GameStateOptionsData& data, Game& game);
-	void HandleGameStateOptionsMouseMoveEvent(sf::Event::MouseMoveEvent event, GameStateOptionsData& data, Game& game);
-	void HandleGameStateOptionsMouseClickEvent(sf::Event::MouseButtonEvent event, GameStateOptionsData& data, Game& game);
+	void HandleGameStateOptionsKeyboardEvent(const sf::Event::KeyEvent event, GameStateOptionsData& data, Game& game);
+	void HandleGameStateOptionsMouseMoveEvent(const sf::Event::MouseMoveEvent event, GameStateOptionsData& data, Game& game);
+	void HandleGameStateOptionsMouseClickEvent(const sf::Event::MouseButtonEvent event, GameStateOptionsData& data, Game& game);
 
 	// Standard functions
 

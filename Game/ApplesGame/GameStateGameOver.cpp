@@ -11,7 +11,7 @@
 
 namespace ApplesGame
 {
-	void HandleGameStateGameOverWindowEvent(GameStateGameOverData& gameStateGameOver, Game& game, const sf::Event event)
+	void HandleGameStateGameOverWindowEvent(GameStateGameOverData& data, Game& game, const sf::Event event)
 	{
 		if (event.type == sf::Event::KeyReleased)
 		{
@@ -26,11 +26,11 @@ namespace ApplesGame
 		}
 	}
 
-	void InitGameStateGameOver(GameStateGameOverData& gameStateGameOver, Game& game)
+	void InitGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
 		// Init fonts
-		assert(gameStateGameOver.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
-		assert(gameStateGameOver.recordsFont.loadFromFile(RESOURCES_PATH + "Fonts/consola.ttf"));
+		assert(data.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
+		assert(data.recordsFont.loadFromFile(RESOURCES_PATH + "Fonts/consola.ttf"));
 
 		// Actualize records
 		if (game.records["Player"] < *game.ptrPlayerScores)
@@ -57,27 +57,27 @@ namespace ApplesGame
 		tableOfLeaders.append(end);
 
 		// Init texts
-		InitText(gameStateGameOver.gameOverText, "GAME OVER", gameStateGameOver.font, sf::Color::Red, 40);
-		SetTextOrigin(gameStateGameOver.gameOverText, TextOrigin::Center);
+		InitText(data.gameOverText, "GAME OVER", data.font, sf::Color::Red, 40);
+		SetTextOrigin(data.gameOverText, TextOrigin::Center);
 
-		InitText(gameStateGameOver.menuText, "Menu", gameStateGameOver.font, sf::Color::White, 20);
-		SetTextOrigin(gameStateGameOver.menuText, TextOrigin::Center);
+		InitText(data.menuText, "Menu", data.font, sf::Color::White, 20);
+		SetTextOrigin(data.menuText, TextOrigin::Center);
 
-		InitText(gameStateGameOver.leaderBoardText, tableOfLeaders, gameStateGameOver.recordsFont, sf::Color::White, 25);
-		SetTextOrigin(gameStateGameOver.leaderBoardText, TextOrigin::Center);
+		InitText(data.leaderBoardText, tableOfLeaders, data.recordsFont, sf::Color::White, 25);
+		SetTextOrigin(data.leaderBoardText, TextOrigin::Center);
 	}
 
-	void DrawGameStateGameOver(GameStateGameOverData& gameStateGameOver, Game& game, sf::RenderWindow& window)
+	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window)
 	{
 		// Set position
-		gameStateGameOver.gameOverText.setPosition(SCREEN_WIDTH_GAME / 2, 100);
-		gameStateGameOver.menuText.setPosition(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME - 50);
-		gameStateGameOver.leaderBoardText.setPosition(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME / 2);
+		data.gameOverText.setPosition(SCREEN_WIDTH_GAME / 2, 100);
+		data.menuText.setPosition(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME - 50);
+		data.leaderBoardText.setPosition(SCREEN_WIDTH_GAME / 2, SCREEN_HEIGHT_GAME / 2);
 
 		// Draw game over window
-		window.draw(gameStateGameOver.gameOverText);
-		window.draw(gameStateGameOver.leaderBoardText);
-		window.draw(gameStateGameOver.menuText);
+		window.draw(data.gameOverText);
+		window.draw(data.leaderBoardText);
+		window.draw(data.menuText);
 	}
 
 	void UpdateGameStateGameOver(GameStateGameOverData& data, Game& game, float timeDelta)
