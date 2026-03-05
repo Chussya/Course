@@ -33,6 +33,7 @@ namespace ApplesGame
 	void SetNumericOnly(TextItem& textItem, bool isOnly);
 	void SetCharOnly(TextItem& textItem, bool isOnly);
 	void SetElementPosition(TextItem& textItem, float x, float y);
+	void SetFocus(TextItem& textItem, bool setFocus);
 
 	// Get properties/values functions
 
@@ -42,7 +43,7 @@ namespace ApplesGame
 	// Common functions
 
 	void DisableOnlyMode(TextItem& textItem);
-	bool IsFocused(TextItem& button);
+	bool IsFocused(TextItem& textItem);
 	bool IsGotFocus(TextItem& textItem, Vector2D mousePos);
 	void HighlightElement(TextItem& textItem);
 	void HighlightElement(TextItem& textItem, sf::Color& color);
