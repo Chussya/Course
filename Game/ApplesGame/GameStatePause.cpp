@@ -39,27 +39,57 @@ namespace ApplesGame
 			SwitchGameState(game, GameStateType::MainMenu);
 			break;
 		}
+		case sf::Keyboard::Left:
+		{
+			SelectElement(data.elementList, EHorizontalDirection::Left);
+			TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused));
+			break;
+		}
+		case sf::Keyboard::Right:
+		{
+			SelectElement(data.elementList, EHorizontalDirection::Right);
+			TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused));
+			break;
+		}
+		case sf::Keyboard::Enter:
+		{
+			if (data.continueBtn.isFocused)
+			{
+				TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnClick));
+				PopGameState(game);
+			}
+			else if (data.exitMenuBtn.isFocused)
+			{
+				TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnClick));
+				SwitchGameState(game, GameStateType::MainMenu);
+			}
+			break;
+		}
 		default:
 			break;
 		}
 	}
 
-	void HandleGameStatePauseMouseMoveEvent(const sf::Event::MouseMoveEvent event, GameStatePauseData & data, Game & game)
+	void HandleGameStatePauseMouseMoveEvent(const sf::Event::MouseMoveEvent event, GameStatePauseData& data, Game& game)
 	{
+		bool isFocused{ false };
 		Vector2D mousePosition = { static_cast<float>(event.x), static_cast<float>(event.y) };
 
-		if (IsGotFocus(data.continueBtn, mousePosition)
-			|| IsGotFocus(data.exitMenuBtn, mousePosition))
+		for (auto& element : data.elementList)
 		{
-			TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused));
+			if (IsGotFocus(element, mousePosition))
+			{
+				isFocused = true;
+				TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused));
+			}
 		}
-		else
+		if (!isFocused)
 		{
 			TurnOffMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused));
 		}
 	}
 
-	void HandleGameStatePauseMouseClickEvent(const sf::Event::MouseButtonEvent event, GameStatePauseData & data, Game & game)
+	void HandleGameStatePauseMouseClickEvent(const sf::Event::MouseButtonEvent event, GameStatePauseData& data, Game& game)
 	{
 		switch (event.button)
 		{
@@ -82,7 +112,7 @@ namespace ApplesGame
 		}
 	}
 
-	void InitGameStatePause(GameStatePauseData & data, Game & game)
+	void InitGameStatePause(GameStatePauseData& data, Game& game)
 	{
 		// Fonts
 		assert(data.font.loadFromFile(RESOURCES_PATH + "Fonts/arial.ttf"));
@@ -97,9 +127,14 @@ namespace ApplesGame
 
 		InitElement(data.exitMenuBtn, "MENU", data.font, sf::Color::White, sf::Color::Yellow, 40);
 		SetTextOrigin(data.exitMenuBtn.text, TextOrigin::Center);
+
+		// Navigations setup
+		data.elementList;
+		InsertButton(data.elementList, data.continueBtn);
+		InsertButton(data.elementList, data.exitMenuBtn);
 	}
 
-	void DrawGameStatePause(GameStatePauseData & data, Game & game, sf::RenderWindow & window)
+	void DrawGameStatePause(GameStatePauseData& data, Game& game, sf::RenderWindow& window)
 	{
 		// Set postions
 		data.textPause.setPosition(window.getSize().x / 2.f, 250.f);
@@ -112,17 +147,20 @@ namespace ApplesGame
 		DrawElementOnWindow(data.exitMenuBtn, window);
 	}
 
-	void UpdateGameStatePause(GameStatePauseData & data, Game & game, float timeDelta)
+	void UpdateGameStatePause(GameStatePauseData& data, Game& game, float timeDelta)
 	{
 		if (IsBitMaskOn(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused)))
 		{
-			if (data.continueBtn.isFocused)
+			for (auto& element : data.elementList)
 			{
-				HighlightElement(data.continueBtn);
-			}
-			else if (data.exitMenuBtn.isFocused)
-			{
-				HighlightElement(data.exitMenuBtn);
+				if (element.isSelected)
+				{
+					HighlightElement(*GetElementButton(element));
+				}
+				else
+				{
+					UnhighlightElement(*GetElementButton(element));
+				}
 			}
 
 			if (IsBitMaskOn(data.eventMask, static_cast<int>(EGameWindowEvent::OnClick)))
@@ -137,7 +175,7 @@ namespace ApplesGame
 		}
 	}
 
-	void ShutdownGameStatePause(GameStatePauseData & data, Game & game)
+	void ShutdownGameStatePause(GameStatePauseData& data, Game& game)
 	{
 		UnhighlightElement(data.continueBtn);
 		UnhighlightElement(data.exitMenuBtn);

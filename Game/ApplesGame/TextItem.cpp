@@ -60,14 +60,21 @@ namespace ApplesGame
 		textItem.text.setPosition(x, y);
 	}
 
+	void SetFocus(TextItem& textItem, bool setFocus)
+	{
+		setFocus
+			? TurnOnMask(textItem.options, static_cast<int>(ETextItemOptions::IsFocused))
+			: TurnOffMask(textItem.options, static_cast<int>(ETextItemOptions::IsFocused));
+	}
+
 	void DrawElementOnWindow(TextItem& textItem, sf::RenderWindow& window)
 	{
 		window.draw(textItem.text);
 	}
 
-	bool IsFocused(TextItem& button)
+	bool IsFocused(TextItem& textItem)
 	{
-		return IsBitMaskOn(button.options, static_cast<int>(ETextItemOptions::IsFocused));
+		return IsBitMaskOn(textItem.options, static_cast<int>(ETextItemOptions::IsFocused));
 	}
 
 	bool IsGotFocus(TextItem& textItem, Vector2D mousePos)

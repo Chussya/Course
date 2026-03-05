@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <list>
 
-#include "ButtonItem.h"
+#include "CustomElement.h"
 
 namespace ApplesGame
 {
@@ -24,6 +25,9 @@ namespace ApplesGame
 
 		ButtonItem continueBtn;
 		ButtonItem exitMenuBtn;
+
+		// List Elements
+		std::list<CustomElement> elementList;
 	};
 
 	void HandleGameStatePauseWindowEvent(GameStatePauseData& data, Game& game, const sf::Event event);

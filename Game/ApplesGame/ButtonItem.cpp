@@ -28,6 +28,11 @@ namespace ApplesGame
 		button.text.setPosition(x, y);
 	}
 
+	void SetFocus(ButtonItem& button, bool setFocus)
+	{
+		button.isFocused = setFocus;
+	}
+
 	bool IsGotFocus(ButtonItem& button, Vector2D mousePos)
 	{
 		sf::FloatRect globalRect = button.text.getGlobalBounds();

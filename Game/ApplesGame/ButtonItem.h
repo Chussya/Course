@@ -20,6 +20,7 @@ namespace ApplesGame
 	// Set properties/values functions
 
 	void SetElementPosition(ButtonItem& button, float x, float y);
+	void SetFocus(ButtonItem& button, bool setFocus);
 
 	// Get properties/values functions
 

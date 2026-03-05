@@ -168,6 +168,7 @@
     <ClCompile Include="GameStatePlaying.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="GameStateOptions.cpp" />
+    <ClCompile Include="CustomElement.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Record.cpp" />
     <ClCompile Include="SFX.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="GameStateOptions.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="GameStateMainMenu.h" />
+    <ClInclude Include="CustomElement.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Record.h" />
     <ClInclude Include="SFX.h" />
