@@ -162,6 +162,7 @@
     <ClCompile Include="GameStateExitDialog.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="GameStateLeaderboard.cpp" />
     <ClCompile Include="GameStateMainMenu.cpp" />
     <ClCompile Include="ButtonItem.cpp" />
     <ClCompile Include="GameStatePause.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="ButtonItem.h" />
+    <ClInclude Include="GameStateLeaderboard.h" />
     <ClInclude Include="GameStatePause.h" />
     <ClInclude Include="GameStatePlaying.h" />
     <ClInclude Include="GameStateOptions.h" />

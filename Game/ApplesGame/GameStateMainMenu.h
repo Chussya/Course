@@ -22,7 +22,8 @@ namespace ApplesGame
 
 		sf::Text titleTxt;
 		ButtonItem startBtn;
-		ButtonItem modeBtn;
+		ButtonItem leaderboardBtn;
+		ButtonItem optionsBtn;
 		ButtonItem exitBtn;
 
 		std::unordered_map<std::string, int> records;

@@ -45,7 +45,8 @@ namespace ApplesGame
 		Vector2D mousePosition = { static_cast<float>(event.x), static_cast<float>(event.y) };
 		
 		if (IsGotFocus(data.startBtn, mousePosition)
-			|| IsGotFocus(data.modeBtn, mousePosition)
+			|| IsGotFocus(data.leaderboardBtn, mousePosition)
+			|| IsGotFocus(data.optionsBtn, mousePosition)
 			|| IsGotFocus(data.exitBtn, mousePosition))
 		{
 			TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnFocused));
@@ -67,7 +68,12 @@ namespace ApplesGame
 				TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnClick));
 				SwitchGameState(game, GameStateType::Playing);
 			}
-			else if (data.modeBtn.isFocused)
+			else if (data.leaderboardBtn.isFocused)
+			{
+				TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnClick));
+				SwitchGameState(game, GameStateType::Leaderboard);
+			}
+			else if (data.optionsBtn.isFocused)
 			{
 				TurnOnMask(data.eventMask, static_cast<int>(EGameWindowEvent::OnClick));
 				SwitchGameState(game, GameStateType::Options);
@@ -96,8 +102,11 @@ namespace ApplesGame
 		InitElement(data.startBtn, "Play", data.font, sf::Color::White, sf::Color::Green, 50);
 		SetTextOrigin(data.startBtn.text, TextOrigin::Center);
 
-		InitElement(data.modeBtn, "Options", data.font, sf::Color::White, sf::Color::Yellow, 50);
-		SetTextOrigin(data.modeBtn.text, TextOrigin::Center);
+		InitElement(data.leaderboardBtn, "Leaderboard", data.font, sf::Color::White, sf::Color::Blue, 50);
+		SetTextOrigin(data.leaderboardBtn.text, TextOrigin::Center);
+
+		InitElement(data.optionsBtn, "Options", data.font, sf::Color::White, sf::Color::Yellow, 50);
+		SetTextOrigin(data.optionsBtn.text, TextOrigin::Center);
 
 		InitElement(data.exitBtn, "Exit", data.font, sf::Color::White, sf::Color::Red, 50);
 		SetTextOrigin(data.exitBtn.text, TextOrigin::Center);
@@ -108,14 +117,16 @@ namespace ApplesGame
 		// Set positions
 		data.titleTxt.setPosition(window.getSize().x / 2.f, 30.f);
 		SetElementPosition(data.startBtn, window.getSize().x / 2.f, 160.f);
-		SetElementPosition(data.modeBtn, window.getSize().x / 2.f, 260.f);
-		SetElementPosition(data.exitBtn, window.getSize().x / 2.f, 360.f);
+		SetElementPosition(data.leaderboardBtn, window.getSize().x / 2.f, 260.f);
+		SetElementPosition(data.optionsBtn, window.getSize().x / 2.f, 360.f);
+		SetElementPosition(data.exitBtn, window.getSize().x / 2.f, 460.f);
 
 		// Draw elements
 		window.draw(data.titleTxt);
-		window.draw(data.startBtn.text);
-		window.draw(data.modeBtn.text);
-		window.draw(data.exitBtn.text);
+		DrawElementOnWindow(data.startBtn, window);
+		DrawElementOnWindow(data.leaderboardBtn, window);
+		DrawElementOnWindow(data.optionsBtn, window);
+		DrawElementOnWindow(data.exitBtn, window);
 	}
 
 	void UpdateGameStateMainMenu(GameStateMainMenuData& data, Game& game, float timeDelta)
@@ -126,9 +137,13 @@ namespace ApplesGame
 			{
 				HighlightElement(data.startBtn);
 			}
-			else if (data.modeBtn.isFocused)
+			else if (data.leaderboardBtn.isFocused)
 			{
-				HighlightElement(data.modeBtn);
+				HighlightElement(data.leaderboardBtn);
+			}
+			else if (data.optionsBtn.isFocused)
+			{
+				HighlightElement(data.optionsBtn);
 			}
 			else if (data.exitBtn.isFocused)
 			{
@@ -143,7 +158,8 @@ namespace ApplesGame
 		else
 		{
 			UnhighlightElement(data.startBtn);
-			UnhighlightElement(data.modeBtn);
+			UnhighlightElement(data.leaderboardBtn);
+			UnhighlightElement(data.optionsBtn);
 			UnhighlightElement(data.exitBtn);
 		}
 	}
@@ -151,7 +167,8 @@ namespace ApplesGame
 	void ShutdownGameStateMainMenu(GameStateMainMenuData& data, Game& game)
 	{
 		UnhighlightElement(data.startBtn);
-		UnhighlightElement(data.modeBtn);
+		UnhighlightElement(data.leaderboardBtn);
+		UnhighlightElement(data.optionsBtn);
 		UnhighlightElement(data.exitBtn);
 	}
 }

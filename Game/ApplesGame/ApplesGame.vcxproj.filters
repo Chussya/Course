@@ -70,6 +70,9 @@
     <ClCompile Include="CustomElement.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="GameStateLeaderboard.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -136,6 +139,9 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="CustomElement.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateLeaderboard.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
