@@ -7,7 +7,6 @@
 #include "Record.h"
 #include "UtilString.h"
 #include "UtilGraphic.h"
-#include "GameSettings.h"
 
 namespace ApplesGame
 {

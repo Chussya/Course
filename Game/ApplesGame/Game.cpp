@@ -4,6 +4,7 @@
 
 #include "Record.h"
 #include "GameStateMainMenu.h"
+#include "GameStateLeaderboard.h"
 #include "GameStateOptions.h"
 #include "GameStatePlaying.h"
 #include "GameStatePause.h"
@@ -16,6 +17,8 @@ namespace ApplesGame
 	{
 		// Generate fake records table
 		InitRecord(game.records);
+
+		game.ptrPlayerScores = &game.records["Player"];
 
 		game.gameStateChangeType = GameStateChangeType::None;
 		game.pendingGameStateType = GameStateType::None;
@@ -147,6 +150,12 @@ namespace ApplesGame
 			InitGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
 			break;
 		}
+		case GameStateType::Leaderboard:
+		{
+			state.data = new GameStateLeaderboardData();
+			InitGameStateLeaderboard(*(GameStateLeaderboardData*)state.data, game);
+			break;
+		}
 		case GameStateType::Options:
 		{
 			state.data = new GameStateOptionsData();
@@ -191,6 +200,12 @@ namespace ApplesGame
 		{
 			ShutdownGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
 			delete (GameStateMainMenuData*)state.data;
+			break;
+		}
+		case GameStateType::Leaderboard:
+		{
+			ShutdownGameStateLeaderboard(*(GameStateLeaderboardData*)state.data, game);
+			delete (GameStateLeaderboardData*)state.data;
 			break;
 		}
 		case GameStateType::Options:
@@ -240,6 +255,11 @@ namespace ApplesGame
 			HandleGameStateMainMenuWindowEvent(*(GameStateMainMenuData*)state.data, game, event);
 			break;
 		}
+		case GameStateType::Leaderboard:
+		{
+			HandleGameStateLeaderboardWindowEvent(*(GameStateLeaderboardData*)state.data, game, event);
+			break;
+		}
 		case GameStateType::Options:
 		{
 			HandleGameStateOptionsWindowEvent(*(GameStateOptionsData*)state.data, game, event);
@@ -280,6 +300,11 @@ namespace ApplesGame
 			UpdateGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, timeDelta);
 			break;
 		}
+		case GameStateType::Leaderboard:
+		{
+			UpdateGameStateLeaderboard(*(GameStateLeaderboardData*)state.data, game, timeDelta);
+			break;
+		}
 		case GameStateType::Options:
 		{
 			UpdateGameStateOptions(*(GameStateOptionsData*)state.data, game, timeDelta);
@@ -318,6 +343,11 @@ namespace ApplesGame
 		case GameStateType::MainMenu:
 		{
 			DrawGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::Leaderboard:
+		{
+			DrawGameStateLeaderboard(*(GameStateLeaderboardData*)state.data, game, window);
 			break;
 		}
 		case GameStateType::Options:
