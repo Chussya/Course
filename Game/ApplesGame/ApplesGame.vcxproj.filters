@@ -5,36 +5,24 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{f36bf567-dc09-4ace-b665-eb122fdb4701}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameMain.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Apple.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Stone.cpp">
+    <ClCompile Include="ButtonItem.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomElement.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="SFX.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStateMainMenu.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Record.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="UtilString.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GameStateExitDialog.cpp">
@@ -43,106 +31,124 @@
     <ClCompile Include="GameStateGameOver.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonItem.cpp">
+    <ClCompile Include="GameStateLeaderboard.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateMainMenu.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GameStateOptions.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="UtilGraphic.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="TextItem.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="UtilBitMask.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="ToggleButton.cpp">
+    <ClCompile Include="GameStatePause.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GameStatePlaying.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameStatePause.cpp">
+    <ClCompile Include="Math.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="CustomElement.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateLeaderboard.cpp">
+    <ClCompile Include="Record.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="SFX.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Stone.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TextItem.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleButton.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilBitMask.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilGraphic.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilString.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
     <ClInclude Include="Math.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Sources</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Apple.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Stone.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="SFX.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateMainMenu.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSettings.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Record.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="UtilString.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateExitDialog.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateGameOver.h">
-      <Filter>Sources</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ButtonItem.h">
-      <Filter>Sources</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateOptions.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="UtilGraphic.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="TextItem.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="UtilBitMask.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="ToggleButton.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStatePlaying.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStatePause.h">
-      <Filter>Sources</Filter>
+    <ClInclude Include="Constants.h">
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="CustomElement.h">
-      <Filter>Sources</Filter>
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateExitDialog.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateGameOver.h">
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameStateLeaderboard.h">
-      <Filter>Sources</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GameStateMainMenu.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateOptions.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatePause.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatePlaying.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Record.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SFX.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Stone.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextItem.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleButton.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilBitMask.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilGraphic.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilString.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="openal32.dll" />
   </ItemGroup>
 </Project>
